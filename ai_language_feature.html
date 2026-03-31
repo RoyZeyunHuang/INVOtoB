@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INVO by USWOO — AI Language Features</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ink:#1a1814;
+  --ink2:#2e2c28;
+  --ink3:#6a6660;
+  --ink4:#8a8680;
+  --paper:#faf9f6;
+  --paper2:#f2f0eb;
+  --paper3:#e8e4dc;
+  --rule:#d8d4cc;
+  --rule2:#c4c0b8;
+  --green:#2a6640;
+  --green-bg:#e8f3ec;
+  --red:#b83232;
+  --amber:#8a5a10;
+  --amber-bg:#faeeda;
+  --blue:#1a4a7a;
+  --blue-bg:#e6f0f8;
+  --serif:'Source Serif 4',Georgia,serif;
+  --display:'Playfair Display',Georgia,serif;
+  --mono:'DM Mono',monospace;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:15px;line-height:1.75}
+
+/* ── MASTHEAD ── */
+.masthead{border-bottom:2px solid var(--ink);padding:0 48px;display:flex;align-items:center;justify-content:space-between;background:var(--paper)}
+.m-logo{padding:20px 0;display:flex;align-items:baseline;gap:16px;border-right:1px solid var(--rule);padding-right:28px;margin-right:28px}
+.m-name{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-0.01em}
+.m-sub{font-family:var(--mono);font-size:9px;color:var(--ink3);letter-spacing:0.14em;text-transform:uppercase}
+.m-left{display:flex;align-items:center}
+.m-tag{font-family:var(--mono);font-size:9px;color:var(--ink3);letter-spacing:0.1em;text-transform:uppercase}
+.m-right{font-family:var(--mono);font-size:9px;color:var(--ink4);letter-spacing:0.06em}
+
+/* ── HERO ── */
+.hero{padding:64px 48px 56px;border-bottom:1px solid var(--rule);max-width:860px}
+.hero-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.hero-eyebrow::after{content:'';flex:1;height:0.5px;background:var(--rule);max-width:120px}
+.hero-title{font-family:var(--display);font-size:42px;font-weight:500;letter-spacing:-0.025em;line-height:1.15;color:var(--ink);margin-bottom:20px}
+.hero-title em{font-style:italic;color:var(--ink3)}
+.hero-body{font-size:15px;color:var(--ink2);line-height:1.85;max-width:560px}
+
+/* ── SECTION LAYOUT ── */
+.section{padding:56px 48px;border-bottom:1px solid var(--rule)}
+.section:last-child{border-bottom:none}
+.section-label{font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink4);margin-bottom:8px}
+.section-title{font-family:var(--display);font-size:26px;font-weight:500;letter-spacing:-0.015em;margin-bottom:10px}
+.section-desc{font-size:13.5px;color:var(--ink3);line-height:1.75;max-width:620px;margin-bottom:32px}
+
+/* ── MODULE 1: INBOUND TRANSLATION ── */
+.translation-demo{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.tpane{background:var(--paper);padding:24px 28px}
+.tpane-label{font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink4);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.lang-sel{display:flex;gap:5px;flex-wrap:wrap}
+.lbtn{font-family:var(--mono);font-size:9px;padding:3px 8px;border:1px solid var(--rule2);cursor:pointer;color:var(--ink3);background:transparent;transition:all 0.12s;letter-spacing:0.04em;text-transform:uppercase}
+.lbtn:hover{border-color:var(--ink2);color:var(--ink2)}
+.lbtn.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+.email-raw{border:1px solid var(--rule);padding:20px 22px;background:var(--paper2);font-size:13.5px;color:var(--ink2);line-height:1.85;min-height:220px;transition:all 0.3s}
+.email-raw .from{font-family:var(--mono);font-size:10px;color:var(--ink3);margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--rule);display:flex;gap:16px}
+.email-raw .from span{color:var(--ink)}
+
+.translated-box{border:1px solid var(--green);padding:20px 22px;background:#f4faf6;font-size:13px;color:var(--ink);line-height:1.8;min-height:220px;position:relative;transition:all 0.3s}
+.translated-box .from{font-family:var(--mono);font-size:10px;color:var(--ink3);margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #c8e0d0;display:flex;gap:16px}
+.translated-box .from span{color:var(--ink)}
+.ai-badge{position:absolute;top:14px;right:16px;font-family:var(--mono);font-size:8px;padding:3px 8px;background:var(--green);color:#fff;letter-spacing:0.08em;text-transform:uppercase}
+.lang-tag{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;padding:2px 7px;border:1px solid var(--rule2);color:var(--ink3);margin-right:6px;vertical-align:middle}
+.confidence{font-family:var(--mono);font-size:9px;color:var(--green);margin-top:10px;padding-top:10px;border-top:1px solid #c8e0d0;display:flex;align-items:center;gap:8px}
+.conf-bar{flex:1;height:3px;background:#c8e0d0;max-width:120px}
+.conf-fill{height:100%;background:var(--green)}
+.detect-note{background:var(--paper2);border-top:1px solid var(--rule);padding:12px 28px;font-family:var(--mono);font-size:9px;color:var(--ink3);letter-spacing:0.04em;display:flex;align-items:center;gap:8px}
+.detect-note strong{color:var(--ink2)}
+
+/* ── MODULE 2: EMAIL TEMPLATE ── */
+.template-frame{border:1px solid var(--rule);overflow:hidden}
+.template-controls{background:var(--paper2);border-bottom:1px solid var(--rule);padding:14px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ctrl-label{font-family:var(--mono);font-size:9px;color:var(--ink3);text-transform:uppercase;letter-spacing:0.12em;margin-right:4px}
+.lang-pill{font-family:var(--mono);font-size:9px;padding:5px 12px;border:1px solid var(--rule2);cursor:pointer;color:var(--ink3);background:transparent;transition:all 0.12s;text-transform:uppercase;letter-spacing:0.06em}
+.lang-pill:hover{border-color:var(--ink2);color:var(--ink2)}
+.lang-pill.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.detect-pill{font-family:var(--mono);font-size:8px;padding:2px 6px;border:1px solid var(--amber);color:var(--amber);background:var(--amber-bg);letter-spacing:0.06em;margin-left:2px}
+.ctrl-sep{width:1px;height:20px;background:var(--rule);margin:0 6px}
+.template-type-btn{font-family:var(--mono);font-size:9px;padding:5px 12px;border:1px solid var(--rule2);cursor:pointer;color:var(--ink3);background:transparent;transition:all 0.12s;text-transform:uppercase;letter-spacing:0.06em}
+.template-type-btn.active{border-color:var(--ink2);color:var(--ink)}
+
+/* THE EMAIL ITSELF */
+.email-shell{background:#f0ede6;padding:32px 20px;min-height:500px}
+.email-card{max-width:560px;margin:0 auto;background:#ffffff;font-family:Georgia,'Source Serif 4',serif}
+.ec-header{background:var(--ink);padding:26px 36px;display:flex;align-items:flex-end;justify-content:space-between}
+.ec-logo{font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:500;color:#ffffff;letter-spacing:-0.02em;line-height:1}
+.ec-logo-sub{font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,0.4);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px}
+.ec-building{font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,0.35);letter-spacing:0.06em;text-align:right;text-transform:uppercase;line-height:1.8}
+.ec-powered{font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,0.25);letter-spacing:0.06em;text-transform:uppercase;margin-top:4px}
+.ec-body{padding:36px 36px 28px}
+.ec-eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#8a8680;margin-bottom:14px}
+.ec-greeting{font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:500;color:#1a1814;line-height:1.3;margin-bottom:20px;letter-spacing:-0.01em}
+.ec-p{font-size:14px;color:#4a4640;line-height:1.85;margin-bottom:16px}
+.ec-p strong{color:#1a1814;font-weight:500}
+.ec-divider{height:0.5px;background:#d8d4cc;margin:24px 0}
+.ec-steps{margin-bottom:24px}
+.ec-step{display:flex;gap:14px;padding:12px 0;border-bottom:0.5px solid #e8e4dc}
+.ec-step:last-child{border-bottom:none}
+.ec-step-num{font-family:'DM Mono',monospace;font-size:11px;color:#8a8680;width:18px;flex-shrink:0;padding-top:1px}
+.ec-step-text{font-size:13px;color:#4a4640;line-height:1.6}
+.ec-step-text strong{color:#1a1814}
+.ec-cta{background:#1a1814;padding:13px 28px;display:inline-block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#ffffff;text-decoration:none;margin:8px 0 24px;cursor:pointer;transition:opacity 0.15s}
+.ec-cta:hover{opacity:0.85}
+.ec-footer{background:#f2f0eb;border-top:1px solid #d8d4cc;padding:20px 36px;font-family:'DM Mono',monospace;font-size:9px;color:#8a8680;line-height:1.8;letter-spacing:0.04em}
+.ec-footer a{color:#4a4640;text-decoration:none}
+
+/* auto-detect note in template section */
+.auto-note{background:var(--amber-bg);border:1px solid #e8c87a;padding:14px 24px;font-family:var(--mono);font-size:10px;color:var(--amber);line-height:1.7;display:flex;gap:12px;align-items:flex-start}
+.auto-note-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+
+/* animations */
+@keyframes fadeSlide{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:fadeSlide 0.25s ease forwards}
+
+/* scrollbar */
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--paper2)}::-webkit-scrollbar-thumb{background:var(--rule2);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="m-left">
+    <div class="m-logo">
+      <div>
+        <div class="m-name">INVO <em style="font-style:italic;font-weight:300;opacity:0.45;font-size:0.78em;letter-spacing:0.02em">by USWOO</em></div>
+        <div class="m-sub">Property Marketing Intelligence</div>
+      </div>
+    </div>
+    <div class="m-tag">AI Language Features</div>
+  </div>
+  <div class="m-right">Feature Overview · 2025</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Multilingual AI</div>
+  <div class="hero-title">Every resident, <em>in their language.</em><br>Every signal, in yours.</div>
+  <div class="hero-body">INVO automatically reads, translates, and responds to residents in the language they use — without any manual input from your team. Language detection is powered by name parsing combined with the resident's communication history.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODULE 1 — INBOUND TRANSLATION
+════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">Module 01</div>
+  <div class="section-title">Inbound email translation</div>
+  <div class="section-desc">When a resident writes to you in their native language, INVO instantly translates the message into English for your team. The original language is preserved alongside for reference. Select a language below to see a live example.</div>
+
+  <div class="translation-demo">
+    <!-- Left: raw inbound -->
+    <div class="tpane">
+      <div class="tpane-label">
+        <span>Resident's message</span>
+        <div class="lang-sel" id="lang-sel">
+          <button class="lbtn active" onclick="setLang('zh',this)">中文</button>
+          <button class="lbtn" onclick="setLang('es',this)">ES</button>
+          <button class="lbtn" onclick="setLang('ko',this)">한국어</button>
+          <button class="lbtn" onclick="setLang('ru',this)">RU</button>
+          <button class="lbtn" onclick="setLang('ar',this)">AR</button>
+          <button class="lbtn" onclick="setLang('fr',this)">FR</button>
+        </div>
+      </div>
+      <div class="email-raw" id="raw-email"></div>
+    </div>
+
+    <!-- Right: translated -->
+    <div class="tpane">
+      <div class="tpane-label"><span>Auto-translated for your team</span></div>
+      <div class="translated-box" id="translated-email">
+        <div class="ai-badge">AI Translated</div>
+      </div>
+    </div>
+  </div>
+  <div class="detect-note" id="detect-note-1">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5.5" stroke="#8a8680"/><path d="M6 5v4M6 3.5v.5" stroke="#8a8680" stroke-linecap="round"/></svg>
+    <span id="detect-text">Language detected from <strong>name pattern</strong> + <strong>2 prior messages in Mandarin Chinese</strong>. Confidence: 97%.</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODULE 2 — OUTBOUND EMAIL TEMPLATE
+════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">Module 02</div>
+  <div class="section-title">Outbound renewal reminders</div>
+  <div class="section-desc">INVO generates personalised renewal reminder emails in the resident's detected language. The template is designed to increase renewal conversion — clear, warm, and professional. Language is selected automatically based on name analysis and message history.</div>
+
+  <div class="auto-note" style="margin-bottom:20px">
+    <div class="auto-note-icon">◆</div>
+    <div>
+      <strong style="color:var(--amber)">How language is auto-detected</strong><br>
+      INVO parses the resident's full name to identify likely language background, then cross-references all prior inbound messages. If the resident has written in Chinese three times and English once, Chinese is selected. The system also detects script direction (RTL for Arabic) and applies it automatically to the outgoing email.
+    </div>
+  </div>
+
+  <div class="template-frame">
+    <div class="template-controls">
+      <span class="ctrl-label">Language</span>
+      <button class="lang-pill active" onclick="setTmplLang('en',this)">EN</button>
+      <button class="lang-pill" onclick="setTmplLang('zh',this)">中文<span class="detect-pill" style="margin-left:5px">Auto</span></button>
+      <button class="lang-pill" onclick="setTmplLang('es',this)">ES</button>
+      <button class="lang-pill" onclick="setTmplLang('ko',this)">한국어</button>
+      <button class="lang-pill" onclick="setTmplLang('ru',this)">RU</button>
+      <button class="lang-pill" onclick="setTmplLang('ar',this)">AR</button>
+      <button class="lang-pill" onclick="setTmplLang('fr',this)">FR</button>
+      <div class="ctrl-sep"></div>
+      <span class="ctrl-label">Type</span>
+      <button class="template-type-btn active" onclick="setTmplType('reminder',this)">Reminder</button>
+      <button class="template-type-btn" onclick="setTmplType('offer',this)">Offer</button>
+      <button class="template-type-btn" onclick="setTmplType('urgency',this)">Urgent</button>
+    </div>
+
+    <div class="email-shell">
+      <div class="email-card" id="email-card"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── INBOUND TRANSLATION DATA ────────────────────────────────────────────────
+const inbound = {
+  zh:{
+    from:{name:'陈 晓雨 (Xiaoyu Chen)', apt:'Apt 4B', date:'Mar 8, 2025'},
+    raw:`<div class="from"><span>来自</span><span>陈晓雨 · Apt 4B</span><span>2025年3月8日</span></div>您好，我想咨询一下关于续租的问题。我目前的租约将于本月底到期，但我还没有收到任何关于续租的通知。我很喜欢住在这里，希望能够续签，但我需要了解新的租金是否会有所调整，以及续租的具体流程是什么。请尽快回复，谢谢。`,
+    translated:`<div class="from"><span>From</span><span>Xiaoyu Chen · Apt 4B</span><span>Mar 8, 2025</span></div><div class="ai-badge">AI Translated</div>Hello, I would like to inquire about renewing my lease. My current lease expires at the end of this month, but I haven't received any renewal notice yet. I really enjoy living here and would like to renew, but I need to understand whether the rent will be adjusted and what the specific renewal process involves. Please reply as soon as possible. Thank you.`,
+    conf:97,
+    detect:'Language detected from <strong>name pattern (陈 — Chinese surname)</strong> + <strong>3 prior messages in Mandarin Chinese</strong>. Confidence: 97%.'
+  },
+  es:{
+    from:{name:'María Torres', apt:'Apt 11A', date:'Mar 5, 2025'},
+    raw:`<div class="from"><span>De</span><span>María Torres · Apt 11A</span><span>5 de marzo, 2025</span></div>Hola, me comunico para informarles que el problema de ruido del apartamento vecino continúa sin resolverse. He presentado dos quejas formales y todavía no he recibido ninguna solución. Estoy considerando seriamente no renovar mi contrato a menos que se tome alguna acción. Por favor, necesito una respuesta urgente.`,
+    translated:`<div class="from"><span>From</span><span>María Torres · Apt 11A</span><span>Mar 5, 2025</span></div><div class="ai-badge">AI Translated</div>Hello, I am writing to let you know that the noise issue from the neighboring apartment remains unresolved. I have submitted two formal complaints and have still not received any solution. I am seriously considering not renewing my lease unless some action is taken. Please, I need an urgent response.`,
+    conf:99,
+    detect:'Language detected from <strong>name pattern (Torres — Spanish surname)</strong> + <strong>2 prior messages in Spanish</strong>. Confidence: 99%.'
+  },
+  ko:{
+    from:{name:'김 래원 (Raewon Kim)', apt:'Apt 7C', date:'Feb 18, 2025'},
+    raw:`<div class="from"><span>보낸 사람</span><span>김래원 · Apt 7C</span><span>2025년 2월 18일</span></div>안녕하세요. 임대 갱신 관련하여 문의드립니다. 현재 계약이 곧 만료될 예정인데, 갱신 절차와 필요한 서류에 대해 알고 싶습니다. 또한 갱신 시 임대료 변동이 있는지 여부도 확인 부탁드립니다. 감사합니다.`,
+    translated:`<div class="from"><span>From</span><span>Raewon Kim · Apt 7C</span><span>Feb 18, 2025</span></div><div class="ai-badge">AI Translated</div>Hello. I am writing to inquire about my lease renewal. My current contract is about to expire, and I would like to know the renewal process and the required documents. I would also appreciate confirmation of whether there will be any change in the rent upon renewal. Thank you.`,
+    conf:96,
+    detect:'Language detected from <strong>name pattern (김 — Korean surname)</strong> + <strong>first message in Korean</strong>. Confidence: 96%.'
+  },
+  ru:{
+    from:{name:'Дмитрий Волков (D. Volkov)', apt:'Apt 8B', date:'Mar 7, 2025'},
+    raw:`<div class="from"><span>От</span><span>Дмитрий Волков · Apt 8B</span><span>7 марта 2025</span></div>Здравствуйте. Я хотел бы сообщить вам, что намерен продлить договор аренды. Пожалуйста, пришлите мне необходимые документы для оформления продления. Также хотел бы уточнить, изменится ли арендная плата на следующий год. Заранее благодарю за ответ.`,
+    translated:`<div class="from"><span>From</span><span>Dmitry Volkov · Apt 8B</span><span>Mar 7, 2025</span></div><div class="ai-badge">AI Translated</div>Hello. I would like to inform you that I intend to renew my lease. Please send me the necessary documents for the renewal process. I would also like to clarify whether the rent will change for the next year. Thank you in advance for your response.`,
+    conf:98,
+    detect:'Language detected from <strong>name pattern (Волков — Russian surname)</strong> + <strong>1 prior message in Russian</strong>. Confidence: 98%.'
+  },
+  ar:{
+    from:{name:'يوسف حسن (Youssef Hassan)', apt:'Apt 3D', date:'Mar 4, 2025'},
+    raw:`<div class="from" style="direction:rtl;text-align:right"><span>من</span><span>يوسف حسن · Apt 3D</span><span>٤ مارس ٢٠٢٥</span></div><div style="direction:rtl;text-align:right">السلام عليكم، أكتب إليكم بخصوص تجديد عقد الإيجار الخاص بي. عقدي الحالي ينتهي قريباً وأود الاستفسار عن إجراءات التجديد والمستندات المطلوبة. كما أود معرفة ما إذا كان سيكون هناك تعديل في قيمة الإيجار. شكراً لكم.</div>`,
+    translated:`<div class="from"><span>From</span><span>Youssef Hassan · Apt 3D</span><span>Mar 4, 2025</span></div><div class="ai-badge">AI Translated</div>Peace be upon you. I am writing regarding the renewal of my lease. My current contract is expiring soon and I would like to inquire about the renewal procedures and required documents. I would also like to know whether there will be an adjustment to the rent amount. Thank you.`,
+    conf:95,
+    detect:'Language detected from <strong>name pattern (حسن — Arabic surname)</strong> + <strong>RTL script confirmed</strong>. Confidence: 95%.'
+  },
+  fr:{
+    from:{name:'Lucie Dubois', apt:'Apt 6A', date:'Mar 4, 2025'},
+    raw:`<div class="from"><span>De</span><span>Lucie Dubois · Apt 6A</span><span>4 mars 2025</span></div>Bonjour, je vous écris pour vous faire part de mon souhait de renouveler mon bail pour une année supplémentaire. Je suis très satisfaite de mon logement et du cadre de vie. Pourriez-vous me confirmer les démarches à suivre ainsi que la date limite pour formaliser ce renouvellement ? Merci beaucoup.`,
+    translated:`<div class="from"><span>From</span><span>Lucie Dubois · Apt 6A</span><span>Mar 4, 2025</span></div><div class="ai-badge">AI Translated</div>Hello, I am writing to let you know of my wish to renew my lease for an additional year. I am very happy with my apartment and the living environment. Could you confirm the steps to follow and the deadline to formalise this renewal? Thank you very much.`,
+    conf:99,
+    detect:'Language detected from <strong>name pattern (Dubois — French surname)</strong> + <strong>1 prior message in French</strong>. Confidence: 99%.'
+  }
+};
+
+function setLang(code, btn) {
+  document.querySelectorAll('.lbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const d = inbound[code];
+  const raw = document.getElementById('raw-email');
+  const tr = document.getElementById('translated-email');
+  raw.innerHTML = d.raw;
+  tr.innerHTML = d.translated;
+  raw.classList.remove('anim'); void raw.offsetWidth; raw.classList.add('anim');
+  tr.classList.remove('anim'); void tr.offsetWidth; tr.classList.add('anim');
+  tr.innerHTML += `<div class="confidence"><div class="conf-bar"><div class="conf-fill" style="width:${d.conf}%"></div></div><span style="font-family:var(--mono);font-size:9px;color:var(--green)">Confidence ${d.conf}%</span></div>`;
+  document.getElementById('detect-text').innerHTML = d.detect;
+}
+
+// ─── EMAIL TEMPLATE DATA ─────────────────────────────────────────────────────
+const tmplLangs = {
+  en:{dir:'ltr',label:'EN',
+    eyebrow:'Lease renewal notice',
+    greeting:name=>`Dear ${name},`,
+    p1:days=>`We hope you've been enjoying your home here at Sven Journal Square. We're writing because your current lease is set to expire in <strong>${days} days</strong> — and we'd love for you to stay.`,
+    p2:`Renewing is straightforward. You have until <strong>60 days before your expiration date</strong> to let us know your intentions. Our team is here to answer any questions about the process, pricing, or your options.`,
+    steps:[
+      ['01',`<strong>Let us know</strong> you'd like to renew — reply to this email or contact the management office.`],
+      ['02',`<strong>Review your renewal offer</strong> — we'll send you updated terms within 3 business days.`],
+      ['03','<strong>Sign your new lease</strong> — fully digital, takes under 5 minutes.'],
+    ],
+    cta:'Start my renewal',
+    sign:`If you have any questions or concerns about your home, please don't hesitate to reach out. We're committed to making Sven the place you want to stay.`,
+    offer_label:'Your renewal offer',
+    offer_rate:'Same rate',
+    offer_rate_label:'locked in for 12 months',
+    offer_expires_label:'Offer expires',
+    offer_date:'April 30, 2025',
+    offer_p1:`We're delighted you've been part of the Sven community. We'd like to make staying easy — your renewal offer is ready, and your current rate is locked in for another 12 months.`,
+    offer_compare_label:'Why renewing makes sense',
+    offer_stay:'Stay & renew',
+    offer_stay_text:'$0 moving costs · No broker fee · Same home, same neighbours',
+    offer_move:'Move elsewhere',
+    offer_move_text:'Avg. $3,000–5,000 moving costs · Broker fee · New application process',
+    offer_secondary:'View full offer details',
+    urgent_days_label:'days remaining',
+    urgent_deadline:'Action required before lease expires',
+    urgent_badge:'Action required',
+    urgent_p1:`We haven't heard from you yet, and your lease is expiring soon. We'd love for you to stay — but we need to hear from you <strong>before your lease ends</strong>.`,
+    urgent_warning:`If we do not hear from you before your lease expires, your unit will be listed for new applicants. Please respond today to secure your home.`,
+    urgent_action_label:'One step to renew',
+    urgent_action:`Reply to this email with <strong>"Renew"</strong> and our team will handle everything within 24 hours. No paperwork needed to get started.`,
+    urgent_cta:'Secure my home now',
+    urgent_secondary:'Call us instead',
+    footer:'Sven Journal Square · 1 Journal Square Plaza, Jersey City, NJ 07306 · management@sven-jc.com<br>© 2025 Sven Journal Square. <a href="#">Unsubscribe</a> · <a href="#">Privacy Policy</a><br><span style="opacity:0.55">Powered by INVO · USWOO</span>'
+  },
+  zh:{dir:'ltr',label:'中文',
+    eyebrow:'租约续签通知',
+    greeting:name=>`尊敬的 ${name}，`,
+    p1:days=>`希望您在 Sven Journal Square 的居住生活一切顺心。我们写信是因为您的当前租约将在 <strong>${days} 天后</strong> 到期，我们非常希望您能继续留下来。`,
+    p2:`续租流程十分简便。请在租约到期前 <strong>60 天内</strong> 告知我们您的意向，我们的工作人员将随时为您解答关于流程、租金或其他选项的任何问题。`,
+    steps:[
+      ['01','<strong>告知我们</strong>您希望续租 — 回复本邮件或联系管理办公室。'],
+      ['02','<strong>审阅续租报价</strong> — 我们将在 3 个工作日内向您发送更新后的条款。'],
+      ['03','<strong>签署新租约</strong> — 全程数字化操作，不到 5 分钟即可完成。'],
+    ],
+    cta:'开始续租',
+    sign:'如果您对居住环境有任何疑问或需求，请随时联系我们。我们致力于让 Sven 成为您愿意长期居住的家。',
+    offer_label:'您的续租报价',offer_rate:'同等租金',offer_rate_label:'锁定12个月',offer_expires_label:'报价有效期至',offer_date:'2025年4月30日',
+    offer_p1:`非常感谢您选择在 Sven 居住。我们为您准备了专属续租报价，当前租金将继续锁定12个月。`,
+    offer_compare_label:'续租的理由',offer_stay:'续租留下',offer_stay_text:'零搬家费用 · 无中介费 · 熟悉的家',offer_move:'搬往他处',offer_move_text:'平均搬家费 $3,000–5,000 · 中介费 · 重新申请',offer_secondary:'查看完整报价',
+    urgent_days_label:'天后租约到期',urgent_deadline:'请立即采取行动',urgent_badge:'需要您的回复',
+    urgent_p1:`我们尚未收到您的回复，而您的租约即将到期。请在<strong>租约结束前</strong>给我们回复。`,
+    urgent_warning:`如果在租约到期前我们未收到您的回复，您的公寓将面向新申请人开放。请今天就回复我们。`,
+    urgent_action_label:'一步完成续租',urgent_action:`回复本邮件并写上<strong>"续租"</strong>，我们将在24小时内处理好一切。`,urgent_cta:'立即确认续租',urgent_secondary:'致电我们',
+    footer:'Sven Journal Square · 1 Journal Square Plaza, Jersey City, NJ 07306 · management@sven-jc.com<br>© 2025 Sven Journal Square. <a href="#">退订</a> · <a href="#">隐私政策</a><br><span style="opacity:0.5">Powered by INVO · USWOO</span>'
+  },
+  es:{dir:'ltr',label:'ES',
+    eyebrow:'Aviso de renovación de contrato',
+    greeting:name=>`Estimada/o ${name},`,
+    p1:days=>`Esperamos que esté disfrutando de su hogar en Sven Journal Square. Le escribimos porque su contrato de arrendamiento actual expirará en <strong>${days} días</strong>, y nos gustaría que continuara con nosotros.`,
+    p2:`Renovar es sencillo. Tiene hasta <strong>60 días antes de la fecha de vencimiento</strong> para informarnos de su intención. Nuestro equipo está disponible para responder cualquier pregunta sobre el proceso, precios u opciones.`,
+    steps:[
+      ['01','<strong>Avísenos</strong> que desea renovar — responda este correo o comuníquese con la oficina de administración.'],
+      ['02','<strong>Revise su oferta de renovación</strong> — le enviaremos los términos actualizados en 3 días hábiles.'],
+      ['03','<strong>Firme su nuevo contrato</strong> — completamente digital, tarda menos de 5 minutos.'],
+    ],
+    cta:'Iniciar mi renovación',
+    sign:'Si tiene alguna pregunta o inquietud sobre su hogar, no dude en comunicarse con nosotros. Estamos comprometidos a hacer de Sven el lugar donde quiera quedarse.',
+    footer:'Sven Journal Square · 1 Journal Square Plaza, Jersey City, NJ 07306 · management@sven-jc.com<br>© 2025 Sven Journal Square. <a href="#">Cancelar suscripción</a> · <a href="#">Política de privacidad</a><br><span style="opacity:0.5">Powered by INVO · USWOO</span>'
+  },
+  ko:{dir:'ltr',label:'한국어',
+    eyebrow:'임대 계약 갱신 안내',
+    greeting:name=>`${name} 고객님께,`,
+    p1:days=>`Sven Journal Square에서의 생활이 편안하시길 바랍니다. 현재 임대 계약이 <strong>${days}일 후</strong> 만료될 예정이기에 연락드립니다. 저희는 고객님께서 계속 함께해 주시길 진심으로 바랍니다.`,
+    p2:`갱신 절차는 간단합니다. 만료일 <strong>60일 전까지</strong> 의향을 알려주시면 됩니다. 저희 담당자가 절차, 임대료, 옵션 등 궁금한 사항을 안내해 드리겠습니다.`,
+    steps:[
+      ['01','<strong>갱신 의향 전달</strong> — 이 이메일에 답장하시거나 관리 사무소에 연락 주세요.'],
+      ['02','<strong>갱신 제안서 검토</strong> — 영업일 기준 3일 이내에 업데이트된 조건을 보내드립니다.'],
+      ['03','<strong>새 계약서 서명</strong> — 전자 서명으로 5분 이내에 완료됩니다.'],
+    ],
+    cta:'갱신 시작하기',
+    sign:'거주 환경에 대해 궁금한 점이나 불편한 사항이 있으시면 언제든지 연락 주시기 바랍니다. Sven이 고객님이 계속 머물고 싶은 공간이 되도록 최선을 다하겠습니다.',
+    footer:'Sven Journal Square · 1 Journal Square Plaza, Jersey City, NJ 07306 · management@sven-jc.com<br>© 2025 Sven Journal Square. <a href="#">수신 거부</a> · <a href="#">개인정보처리방침</a><br><span style="opacity:0.5">Powered by INVO · USWOO</span>'
+  },
+  ru:{dir:'ltr',label:'RU',
+    eyebrow:'Уведомление о продлении договора',
+    greeting:name=>`Уважаемый/ая ${name},`,
+    p1:days=>`Надеемся, что вам комфортно в Sven Journal Square. Мы пишем, потому что срок вашего договора аренды истекает через <strong>${days} дней</strong>, и мы будем рады, если вы останетесь.`,
+    p2:`Процедура продления проста. Вам необходимо сообщить о своём намерении не позднее чем за <strong>60 дней до окончания срока</strong>. Наша команда готова ответить на любые вопросы о процессе, стоимости или условиях.`,
+    steps:[
+      ['01','<strong>Сообщите нам</strong> о желании продлить договор — ответьте на это письмо или свяжитесь с управляющей компанией.'],
+      ['02','<strong>Ознакомьтесь с предложением о продлении</strong> — мы пришлём обновлённые условия в течение 3 рабочих дней.'],
+      ['03','<strong>Подпишите новый договор</strong> — полностью в электронном виде, менее 5 минут.'],
+    ],
+    cta:'Начать продление',
+    sign:'Если у вас есть вопросы или пожелания относительно вашего жилья, пожалуйста, не стесняйтесь обращаться к нам. Мы стремимся сделать Sven местом, где вы захотите остаться надолго.',
+    footer:'Sven Journal Square · 1 Journal Square Plaza, Jersey City, NJ 07306 · management@sven-jc.com<br>© 2025 Sven Journal Square. <a href="#">Отписаться</a> · <a href="#">Политика конфиденциальности</a><br><span style="opacity:0.5">Powered by INVO · USWOO</span>'
+  },
+  ar:{dir:'rtl',label:'AR',
+    eyebrow:'إشعار تجديد عقد الإيجار',
+    greeting:name=>`عزيزي/عزيزتي ${name}،`,
+    p1:days=>`نأمل أن تكون تجربتك في Sven Journal Square ممتعة ومريحة. نكتب إليك لأن عقد إيجارك الحالي سينتهي خلال <strong>${days} يوماً</strong>، ونودّ أن تبقى معنا.`,
+    p2:`عملية التجديد بسيطة للغاية. يرجى إبلاغنا برغبتك قبل <strong>60 يوماً من تاريخ الانتهاء</strong>. فريقنا مستعد للإجابة على أي أسئلة حول الإجراءات أو الأسعار أو الخيارات المتاحة.`,
+    steps:[
+      ['01','<strong>أخبرنا</strong> برغبتك في التجديد — رد على هذا البريد الإلكتروني أو تواصل مع مكتب الإدارة.'],
+      ['02','<strong>راجع عرض التجديد</strong> — سنرسل إليك الشروط المحدّثة في غضون 3 أيام عمل.'],
+      ['03','<strong>وقّع عقدك الجديد</strong> — إلكترونياً بالكامل، ويستغرق أقل من 5 دقائق.'],
+    ],
+    cta:'ابدأ تجديدي',
+    sign:'إذا كان لديك أي أسئلة أو استفسارات بشأن مسكنك، فلا تتردد في التواصل معنا. نحن ملتزمون بجعل Sven المكان الذي تريد البقاء فيه.',
+    footer:'Sven Journal Square · 1 Journal Square Plaza, Jersey City, NJ 07306 · management@sven-jc.com<br>© 2025 Sven Journal Square. <a href="#">إلغاء الاشتراك</a> · <a href="#">سياسة الخصوصية</a><br><span style="opacity:0.5">Powered by INVO · USWOO</span>'
+  },
+  fr:{dir:'ltr',label:'FR',
+    eyebrow:'Avis de renouvellement de bail',
+    greeting:name=>`Chère/Cher ${name},`,
+    p1:days=>`Nous espérons que vous vous épanouissez dans votre logement à Sven Journal Square. Nous vous écrivons car votre bail actuel expire dans <strong>${days} jours</strong>, et nous serions ravis que vous restiez parmi nous.`,
+    p2:`Le renouvellement est simple. Vous avez jusqu\'à <strong>60 jours avant la date d\'expiration</strong> pour nous faire part de vos intentions. Notre équipe est disponible pour répondre à toutes vos questions concernant la procédure, les tarifs ou vos options.`,
+    steps:[
+      ['01','<strong>Informez-nous</strong> de votre souhait de renouveler — répondez à cet e-mail ou contactez le bureau de gestion.'],
+      ['02','<strong>Consultez votre offre de renouvellement</strong> — nous vous enverrons les conditions mises à jour sous 3 jours ouvrés.'],
+      ['03','<strong>Signez votre nouveau bail</strong> — entièrement en ligne, en moins de 5 minutes.'],
+    ],
+    cta:'Commencer mon renouvellement',
+    sign:`Si vous avez des questions ou des préoccupations concernant votre logement, n'hésitez pas à nous contacter. Nous nous engageons à faire de Sven l'endroit où vous souhaitez rester.`,
+    footer:'Sven Journal Square · 1 Journal Square Plaza, Jersey City, NJ 07306 · management@sven-jc.com<br>© 2025 Sven Journal Square. <a href="#">Se désabonner</a> · <a href="#">Politique de confidentialité</a><br><span style="opacity:0.5">Powered by INVO · USWOO</span>'
+  }
+};
+
+const tmplTypes = {
+  reminder:{days:38,name:'J. Chen'},
+  offer:   {days:60,name:'A. Patel'},
+  urgency: {days:8, name:'M. Torres'},
+};
+
+let curLang = 'en', curType = 'reminder';
+
+function ecHeader(l) {
+  return `<div class="ec-header" style="direction:${l.dir}">
+    <div>
+      <div class="ec-logo">Sven Journal Square</div>
+      <div class="ec-logo-sub">1 Journal Square Plaza &nbsp;·&nbsp; Jersey City, NJ</div>
+    </div>
+    <div style="text-align:right">
+      <div class="ec-powered" style="line-height:1.8">Resident intelligence<br>Powered by INVO · USWOO</div>
+    </div>
+  </div>`;
+}
+
+function ecFooter(l) {
+  return `<div class="ec-footer" style="direction:${l.dir};text-align:${l.dir==='rtl'?'right':'left'}">${l.footer}</div>`;
+}
+
+function renderReminder(l, t) {
+  return `
+    ${ecHeader(l)}
+    <div class="ec-body" style="direction:${l.dir};text-align:${l.dir==='rtl'?'right':'left'}">
+      <div class="ec-eyebrow">${l.eyebrow}</div>
+      <div class="ec-greeting">${l.greeting(t.name)}</div>
+      <p class="ec-p">${l.p1(t.days)}</p>
+      <p class="ec-p">${l.p2}</p>
+      <div class="ec-divider"></div>
+      <div class="ec-steps">
+        ${l.steps.map(([n,text])=>`<div class="ec-step"><div class="ec-step-num">${n}</div><div class="ec-step-text">${text}</div></div>`).join('')}
+      </div>
+      <div style="margin:8px 0 24px"><span class="ec-cta">${l.cta}</span></div>
+      <p class="ec-p" style="font-size:13px;color:#8a8680">${l.sign}</p>
+    </div>
+    ${ecFooter(l)}`;
+}
+
+function renderOffer(l, t) {
+  return `
+    ${ecHeader(l)}
+    <div style="background:#f7f4ee;border-bottom:1px solid #e0dbd0;padding:28px 36px;direction:${l.dir};text-align:${l.dir==='rtl'?'right':'left'}">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#8a8680;margin-bottom:10px">${l.offer_label||'Your renewal offer'}</div>
+      <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap">
+        <div>
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:38px;font-weight:400;color:#1a1814;letter-spacing:-0.025em;line-height:1">${l.offer_rate||'Same rate'}</div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#6a6660;margin-top:4px;letter-spacing:0.06em;text-transform:uppercase">${l.offer_rate_label||'locked in for 12 months'}</div>
+        </div>
+        <div style="height:40px;width:1px;background:#d8d4cc;flex-shrink:0"></div>
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#8a8680;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">${l.offer_expires_label||'Offer expires'}</div>
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:16px;color:#1a1814;font-weight:400">${l.offer_date||'April 30, 2025'}</div>
+        </div>
+      </div>
+    </div>
+    <div class="ec-body" style="direction:${l.dir};text-align:${l.dir==='rtl'?'right':'left'}">
+      <div class="ec-greeting" style="font-size:20px">${l.greeting(t.name)}</div>
+      <p class="ec-p">${l.offer_p1||l.p1(t.days)}</p>
+      <div style="background:#f7f4ee;border:1px solid #e0dbd0;padding:16px 20px;margin:20px 0">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:#8a8680;margin-bottom:12px">${l.offer_compare_label||'Why renewing makes sense'}</div>
+        <div style="display:flex;gap:0">
+          <div style="flex:1;padding:12px 16px;border-right:1px solid #e0dbd0">
+            <div style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:#2a6640;margin-bottom:6px">${l.offer_stay||'Stay & renew'}</div>
+            <div style="font-size:13px;color:#2e2c28;line-height:1.6">${l.offer_stay_text||'$0 moving costs · No broker fee · Same home, same neighbours'}</div>
+          </div>
+          <div style="flex:1;padding:12px 16px">
+            <div style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:#8a8680;margin-bottom:6px">${l.offer_move||'Move elsewhere'}</div>
+            <div style="font-size:13px;color:#8a8680;line-height:1.6">${l.offer_move_text||'Avg. $3,000–5,000 moving costs · Broker fee · Application process'}</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin:8px 0 20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <span class="ec-cta">${l.cta}</span>
+        <a href="#" style="font-family:'DM Mono',monospace;font-size:10px;color:#6a6660;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid #c4c0b8">${l.offer_secondary||'View full offer details'}</a>
+      </div>
+      <p class="ec-p" style="font-size:13px;color:#8a8680">${l.sign}</p>
+    </div>
+    ${ecFooter(l)}`;
+}
+
+function renderUrgency(l, t) {
+  const daysLeft = t.days;
+  return `
+    ${ecHeader(l)}
+    <div style="background:#1a1814;padding:14px 36px;display:flex;align-items:center;gap:16px;direction:${l.dir}">
+      <div style="font-family:'Playfair Display',Georgia,serif;font-size:32px;font-weight:400;color:#ffffff;letter-spacing:-0.02em;line-height:1">${daysLeft}</div>
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.1em">${l.urgent_days_label||'days remaining'}</div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:0.06em;margin-top:2px">${l.urgent_deadline||'Lease expires soon'}</div>
+      </div>
+      <div style="flex:1;height:1px;background:rgba(255,255,255,0.12);margin:0 8px"></div>
+      <div style="font-family:'DM Mono',monospace;font-size:9px;color:#b83232;text-transform:uppercase;letter-spacing:0.1em;border:1px solid #b83232;padding:4px 10px">${l.urgent_badge||'Action required'}</div>
+    </div>
+    <div class="ec-body" style="direction:${l.dir};text-align:${l.dir==='rtl'?'right':'left'}">
+      <div class="ec-greeting" style="font-size:20px">${l.greeting(t.name)}</div>
+      <p class="ec-p">${l.urgent_p1||l.p1(t.days)}</p>
+      <div style="border-left:3px solid #b83232;padding:14px 18px;margin:20px 0;background:#fdf6f6">
+        <p class="ec-p" style="margin:0;color:#2e2c28;font-size:13px">${l.urgent_warning||'If we do not hear from you before your lease expires, your unit will be listed for new applicants. Please respond today to secure your home.'}</p>
+      </div>
+      <div style="border:1px solid #e0dbd0;padding:20px;margin:20px 0">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:#8a8680;margin-bottom:12px">${l.urgent_action_label||'One step to renew'}</div>
+        <p class="ec-p" style="margin:0;font-size:13px">${l.urgent_action||'Reply to this email with <strong>"Renew"</strong> and our team will handle everything within 24 hours.'}</p>
+      </div>
+      <div style="margin:8px 0 20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <span class="ec-cta" style="background:#b83232;border:none">${l.urgent_cta||l.cta}</span>
+        <a href="#" style="font-family:'DM Mono',monospace;font-size:10px;color:#6a6660;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid #c4c0b8">${l.urgent_secondary||'Call us instead'}</a>
+      </div>
+      <p class="ec-p" style="font-size:13px;color:#8a8680">${l.sign}</p>
+    </div>
+    ${ecFooter(l)}`;
+}
+
+function renderEmail() {
+  const l = tmplLangs[curLang];
+  const t = tmplTypes[curType];
+  const card = document.getElementById('email-card');
+  if (curType === 'offer') card.innerHTML = renderOffer(l, t);
+  else if (curType === 'urgency') card.innerHTML = renderUrgency(l, t);
+  else card.innerHTML = renderReminder(l, t);
+  card.classList.remove('anim'); void card.offsetWidth; card.classList.add('anim');
+}
+
+function setTmplLang(code, btn) {
+  document.querySelectorAll('.lang-pill').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  curLang = code;
+  renderEmail();
+}
+
+function setTmplType(type, btn) {
+  document.querySelectorAll('.template-type-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  curType = type;
+  renderEmail();
+}
+
+// Init — wait for DOM
+document.addEventListener('DOMContentLoaded', function() {
+  setLang('zh', document.querySelector('.lbtn.active'));
+  renderEmail();
+});
+// Also run immediately in case DOM is already ready
+if (document.readyState !== 'loading') {
+  setLang('zh', document.querySelector('.lbtn.active'));
+  renderEmail();
+}
+</script>
+
+<!-- ═══════════════════════════════════════════
+     MODULE 3 — MONTHLY EXECUTIVE REPORT
+════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">Module 03</div>
+  <div class="section-title">Monthly performance report</div>
+  <div class="section-desc">Automatically generated on the first of each month. Sent directly to the developer and key stakeholders. Designed to be read in under 30 seconds — no login required, no action needed.</div>
+
+  <div class="template-frame" style="margin-top:0">
+    <div class="template-controls">
+      <span class="ctrl-label">Property</span>
+      <button class="template-type-btn active" onclick="setReport('sven',this)">Sven — Journal Square</button>
+      <button class="template-type-btn" onclick="setReport('one',this)">One Journal — JC</button>
+      <div class="ctrl-sep"></div>
+      <span class="ctrl-label">Month</span>
+      <button class="template-type-btn active" onclick="setReportMonth('march',this)" id="rm-march">March 2025</button>
+      <button class="template-type-btn" onclick="setReportMonth('feb',this)" id="rm-feb">Feb 2025</button>
+    </div>
+
+    <div class="email-shell">
+      <div class="email-card" id="report-card"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* ── REPORT-SPECIFIC ── */
+.rpt-header{background:var(--ink);padding:28px 40px;display:flex;align-items:flex-end;justify-content:space-between}
+.rpt-building{font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:500;color:#fff;letter-spacing:-0.02em;line-height:1}
+.rpt-addr{font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,0.4);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px}
+.rpt-right{text-align:right}
+.rpt-month{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.08em;text-transform:uppercase}
+.rpt-powered{font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,0.25);letter-spacing:0.06em;text-transform:uppercase;margin-top:4px;line-height:1.7}
+
+.rpt-status-bar{padding:11px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e0dbd0}
+.rpt-status-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#8a8680}
+.rpt-status-pill{font-family:'DM Mono',monospace;font-size:9px;padding:4px 12px;letter-spacing:0.08em;text-transform:uppercase}
+.pill-green{background:#e8f3ec;color:#2a6640;border:1px solid #b8d9c4}
+.pill-amber{background:#faeeda;color:#8a5a10;border:1px solid #e8c87a}
+.pill-red{background:#fdf0f0;color:#b83232;border:1px solid #e8b4b4}
+
+.rpt-summary{padding:28px 40px 24px;border-bottom:1px solid #e0dbd0}
+.rpt-summary-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#8a8680;margin-bottom:12px}
+.rpt-summary-text{font-family:'Source Serif 4',Georgia,serif;font-size:14px;color:#2e2c28;line-height:1.85}
+
+.rpt-metrics{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #e0dbd0}
+.rpt-metric{padding:24px 28px;border-right:1px solid #e0dbd0}
+.rpt-metric:last-child{border-right:none}
+.rpt-metric-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:#8a8680;margin-bottom:10px}
+.rpt-metric-value{font-family:'Playfair Display',Georgia,serif;font-size:36px;font-weight:400;color:#1a1814;letter-spacing:-0.025em;line-height:1}
+.rpt-metric-delta{font-family:'DM Mono',monospace;font-size:10px;margin-top:8px;letter-spacing:0.04em}
+.rpt-metric-detail{font-family:'DM Mono',monospace;font-size:9px;color:#8a8680;margin-top:5px;letter-spacing:0.03em;line-height:1.6}
+.rpt-pos{color:#2a6640}.rpt-neg{color:#b83232}.rpt-neu{color:#8a8680}
+
+.rpt-footer-bar{padding:18px 40px;display:flex;align-items:center;justify-content:space-between;background:#f7f4ee}
+.rpt-footer-text{font-family:'DM Mono',monospace;font-size:9px;color:#8a8680;letter-spacing:0.04em;line-height:1.8}
+.rpt-footer-link{font-family:'DM Mono',monospace;font-size:9px;color:#1a1814;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid #c4c0b8;padding-bottom:1px}
+
+/* channel table */
+.rpt-channels{border-bottom:1px solid #e0dbd0;padding:24px 40px}
+.rpt-ch-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#8a8680;margin-bottom:14px}
+.rpt-ch-row{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:0.5px solid #ede9e0}
+.rpt-ch-row:last-child{border-bottom:none}
+.rpt-ch-name{font-family:'DM Mono',monospace;font-size:10px;color:#2e2c28;width:100px;flex-shrink:0}
+.rpt-ch-bar-wrap{flex:1;height:3px;background:#ede9e0}
+.rpt-ch-bar{height:100%}
+.rpt-ch-cpl{font-family:'DM Mono',monospace;font-size:10px;width:56px;text-align:right;flex-shrink:0}
+.rpt-ch-leases{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;color:#1a1814;width:28px;text-align:right;flex-shrink:0}
+
+/* renewal tracker */
+.rpt-renewal{border-bottom:1px solid #e0dbd0;padding:24px 40px}
+.rpt-renewal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.rpt-renewal-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#8a8680}
+.rpt-renewal-total{font-family:'DM Mono',monospace;font-size:9px;color:#8a8680;letter-spacing:0.04em}
+.rpt-renewal-track{display:flex;height:8px;width:100%;margin-bottom:10px;gap:2px}
+.rpt-renewal-seg{height:100%}
+.rpt-renewal-legend{display:flex;gap:18px}
+.rpt-legend-item{display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:9px;color:#6a6660;letter-spacing:0.04em}
+.rpt-legend-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+/* flags */
+.rpt-flags{border-bottom:1px solid #e0dbd0;padding:20px 40px}
+.rpt-flags-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#8a8680;margin-bottom:12px}
+.rpt-flag-row{display:flex;gap:10px;padding:8px 0;border-bottom:0.5px solid #ede9e0;align-items:flex-start}
+.rpt-flag-row:last-child{border-bottom:none}
+.rpt-flag-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.rpt-flag-text{font-family:'Source Serif 4',Georgia,serif;font-size:12.5px;color:#2e2c28;line-height:1.6;flex:1}
+.rpt-flag-tag{font-family:'DM Mono',monospace;font-size:8px;padding:2px 6px;border:1px solid;flex-shrink:0;letter-spacing:0.04em;margin-top:1px}
+.tag-pos{border-color:#b8d9c4;color:#2a6640}
+.tag-neg{border-color:#e8b4b4;color:#b83232}
+.tag-neu{border-color:#d8d4cc;color:#8a8680}
+
+/* next month */
+.rpt-next{padding:20px 40px;background:#faf9f6;border-bottom:1px solid #e0dbd0}
+.rpt-next-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#8a8680;margin-bottom:10px}
+.rpt-next-row{display:flex;gap:32px;flex-wrap:wrap}
+.rpt-next-item{display:flex;flex-direction:column;gap:3px}
+.rpt-next-key{font-family:'DM Mono',monospace;font-size:9px;color:#8a8680;text-transform:uppercase;letter-spacing:0.08em}
+.rpt-next-val{font-family:'Playfair Display',Georgia,serif;font-size:18px;font-weight:400;color:#1a1814;letter-spacing:-0.01em}
+</style>
+
+<script>
+const reportData = {
+  sven: {
+    march: {
+      building: 'Sven Journal Square',
+      addr: '1 Journal Square Plaza · Jersey City, NJ',
+      month: 'March 2025',
+      status: 'on-track',
+      statusLabel: 'On track',
+      summary: 'March saw 23 leases signed at an average cost of $618 per lease — an 18% improvement over February. Instagram continued to outperform all paid channels at $201 per lease. Renewal rate held at 94%; two at-risk residents have been flagged and are under active management.',
+      metrics: [
+        {label:'Leases signed',value:'23',delta:'+4 vs. Feb',deltaDir:'pos',detail:'8.1% close rate · 284 leads this month'},
+        {label:'Avg. cost per lease',value:'$618',delta:'↓ 12% vs. Feb',deltaDir:'pos',detail:'Instagram $201 · StreetEasy $3,870'},
+        {label:'Renewal rate',value:'94%',delta:'Stable',deltaDir:'neu',detail:'2 at-risk residents · 18 due in 90 days'}
+      ],
+      channels: [
+        {name:'Instagram',cpl:'$201',leases:9,barW:'95%',barC:'#2a6640',cplDir:'pos'},
+        {name:'Referral',cpl:'$0',leases:5,barW:'88%',barC:'#2a6640',cplDir:'pos'},
+        {name:'Direct',cpl:'$0',leases:2,barW:'55%',barC:'#8a8680',cplDir:'neu'},
+        {name:'StreetEasy',cpl:'$3,870',leases:4,barW:'11%',barC:'#b83232',cplDir:'neg'},
+        {name:'Google Ads',cpl:'$4,100',leases:3,barW:'8%',barC:'#b83232',cplDir:'neg'},
+      ],
+      renewal: {total:18, confirmed:8, inProgress:6, atRisk:2, notContacted:2},
+      flags: [
+        {text:'Instagram Story CTA achieved a 14.5% lead-to-lease conversion rate — the highest recorded in six months.',dir:'pos',tag:'Leasing'},
+        {text:'StreetEasy cost per lease reached $3,870, approximately 19× the Instagram CPL. Two consecutive months above $3,500.',dir:'neg',tag:'Spend'},
+        {text:'Apt 4B and Apt 11A flagged as high churn risk. Both have open maintenance complaints and have not responded to renewal outreach.',dir:'neg',tag:'Retention'},
+      ],
+      next: [
+        {key:'Leasing target',val:'25 leases'},
+        {key:'Renewals expiring',val:'6 units'},
+        {key:'Outreach scheduled',val:'April 1'},
+      ]
+    },
+    feb: {
+      building: 'Sven Journal Square',
+      addr: '1 Journal Square Plaza · Jersey City, NJ',
+      month: 'February 2025',
+      status: 'attention',
+      statusLabel: 'Attention needed',
+      summary: 'February closed with 19 leases signed, below the monthly target of 22. Cost per lease rose to $702, driven by elevated StreetEasy spend. Renewal outreach began for 18 units expiring in the next 90 days; early sentiment signals are mixed.',
+      metrics: [
+        {label:'Leases signed',value:'19',delta:'−3 vs. target',deltaDir:'neg',detail:'7.2% close rate · 263 leads this month'},
+        {label:'Avg. cost per lease',value:'$702',delta:'↑ 14% vs. Jan',deltaDir:'neg',detail:'Instagram $224 · StreetEasy $4,210'},
+        {label:'Renewal rate',value:'91%',delta:'↓ 3pp vs. Jan',deltaDir:'neg',detail:'4 at-risk residents · Mixed sentiment'}
+      ],
+      channels: [
+        {name:'Instagram',cpl:'$224',leases:7,barW:'80%',barC:'#2a6640',cplDir:'pos'},
+        {name:'Referral',cpl:'$0',leases:3,barW:'70%',barC:'#2a6640',cplDir:'pos'},
+        {name:'StreetEasy',cpl:'$4,210',leases:5,barW:'9%',barC:'#b83232',cplDir:'neg'},
+        {name:'Google Ads',cpl:'$3,940',leases:4,barW:'10%',barC:'#b83232',cplDir:'neg'},
+      ],
+      renewal: {total:18, confirmed:4, inProgress:7, atRisk:4, notContacted:3},
+      flags: [
+        {text:'StreetEasy CPL rose to $4,210 in February, up 8% from January. Paid channel efficiency declining for second consecutive month.',dir:'neg',tag:'Spend'},
+        {text:'Four residents identified as high churn risk. Sentiment scores below 2.5 across all four units.',dir:'neg',tag:'Retention'},
+        {text:'Referral channel delivered 3 leases at zero cost. Resident referral program outperforming paid media on a per-lease basis.',dir:'pos',tag:'Leasing'},
+      ],
+      next: [
+        {key:'Leasing target',val:'22 leases'},
+        {key:'Renewals expiring',val:'18 units'},
+        {key:'Outreach scheduled',val:'Mar 1'},
+      ]
+    }
+  },
+  one: {
+    march: {
+      building: 'One Journal',
+      addr: '1 Erie Street · Jersey City, NJ',
+      month: 'March 2025',
+      status: 'on-track',
+      statusLabel: 'On track',
+      summary: 'March performance was strong across leasing and retention. 31 leases signed at $541 average cost — the lowest CPL recorded since launch. Referral channel contributed 29% of all signed leases. Renewal rate remains at 97%.',
+      metrics: [
+        {label:'Leases signed',value:'31',delta:'+7 vs. Feb',deltaDir:'pos',detail:'9.4% close rate · 330 leads this month'},
+        {label:'Avg. cost per lease',value:'$541',delta:'↓ 22% vs. Feb',deltaDir:'pos',detail:'Referral $0 · Instagram $188'},
+        {label:'Renewal rate',value:'97%',delta:'↑ 2pp vs. Feb',deltaDir:'pos',detail:'1 at-risk resident · 12 due in 90 days'}
+      ],
+      channels: [
+        {name:'Referral',cpl:'$0',leases:9,barW:'100%',barC:'#2a6640',cplDir:'pos'},
+        {name:'Instagram',cpl:'$188',leases:14,barW:'94%',barC:'#2a6640',cplDir:'pos'},
+        {name:'Direct',cpl:'$0',leases:4,barW:'60%',barC:'#8a8680',cplDir:'neu'},
+        {name:'StreetEasy',cpl:'$3,120',leases:4,barW:'16%',barC:'#b83232',cplDir:'neg'},
+      ],
+      renewal: {total:12, confirmed:9, inProgress:2, atRisk:1, notContacted:0},
+      flags: [
+        {text:'Referral channel delivered 9 leases at zero cost — the highest referral count since the building opened.',dir:'pos',tag:'Leasing'},
+        {text:'CPL of $541 is the lowest monthly average recorded. Instagram and referral together account for 74% of signed leases.',dir:'pos',tag:'Efficiency'},
+        {text:'One resident (Apt 12C) flagged for churn risk ahead of April expiry. Outreach initiated.',dir:'neg',tag:'Retention'},
+      ],
+      next: [
+        {key:'Leasing target',val:'28 leases'},
+        {key:'Renewals expiring',val:'3 units'},
+        {key:'Outreach scheduled',val:'April 1'},
+      ]
+    },
+    feb: {
+      building: 'One Journal',
+      addr: '1 Erie Street · Jersey City, NJ',
+      month: 'February 2025',
+      status: 'on-track',
+      statusLabel: 'On track',
+      summary: 'February delivered 24 leases at $695 average cost. Instagram drove the majority of qualified leads. Renewal season begins next month; early outreach has been initiated for 12 expiring units.',
+      metrics: [
+        {label:'Leases signed',value:'24',delta:'On target',deltaDir:'neu',detail:'8.8% close rate · 272 leads this month'},
+        {label:'Avg. cost per lease',value:'$695',delta:'Stable',deltaDir:'neu',detail:'Instagram $212 · Google Ads $3,940'},
+        {label:'Renewal rate',value:'95%',delta:'Stable',deltaDir:'neu',detail:'2 at-risk residents · Early outreach initiated'}
+      ],
+      channels: [
+        {name:'Instagram',cpl:'$212',leases:12,barW:'88%',barC:'#2a6640',cplDir:'pos'},
+        {name:'Referral',cpl:'$0',leases:5,barW:'100%',barC:'#2a6640',cplDir:'pos'},
+        {name:'Google Ads',cpl:'$3,940',leases:4,barW:'11%',barC:'#b83232',cplDir:'neg'},
+        {name:'StreetEasy',cpl:'$3,610',leases:3,barW:'13%',barC:'#b83232',cplDir:'neg'},
+      ],
+      renewal: {total:12, confirmed:6, inProgress:4, atRisk:2, notContacted:0},
+      flags: [
+        {text:'Instagram delivered 12 leases at $212 CPL — consistent with January performance and well below market average.',dir:'pos',tag:'Leasing'},
+        {text:'Google Ads CPL at $3,940. Spend efficiency declining for second month; conversion rate dropped from 4.1% to 3.8%.',dir:'neg',tag:'Spend'},
+        {text:'Renewal outreach initiated for 12 units expiring in March and April. Early response rate is 50%.',dir:'neu',tag:'Retention'},
+      ],
+      next: [
+        {key:'Leasing target',val:'26 leases'},
+        {key:'Renewals expiring',val:'12 units'},
+        {key:'Outreach scheduled',val:'Mar 1'},
+      ]
+    }
+  }
+};
+
+let curReport = 'sven', curReportMonth = 'march';
+
+function renderReport() {
+  const d = reportData[curReport][curReportMonth];
+  const pillClass = d.status === 'on-track' ? 'pill-green' : d.status === 'attention' ? 'pill-amber' : 'pill-red';
+  const r = d.renewal;
+  const totalSegs = r.total;
+  const segs = [
+    {n:r.confirmed, c:'#2a6640'},
+    {n:r.inProgress, c:'#8a8680'},
+    {n:r.atRisk, c:'#b83232'},
+    {n:r.notContacted, c:'#d8d4cc'},
+  ];
+
+  document.getElementById('report-card').innerHTML = `
+    <div class="rpt-header">
+      <div>
+        <div class="rpt-building">${d.building}</div>
+        <div class="rpt-addr">${d.addr}</div>
+      </div>
+      <div class="rpt-right">
+        <div class="rpt-month">${d.month}</div>
+        <div class="rpt-powered">Resident intelligence<br>Powered by INVO · USWOO</div>
+      </div>
+    </div>
+
+    <div class="rpt-status-bar">
+      <div class="rpt-status-label">Monthly status · ${d.month}</div>
+      <div class="rpt-status-pill ${pillClass}">${d.statusLabel}</div>
+    </div>
+
+    <div class="rpt-summary">
+      <div class="rpt-summary-label">Executive summary</div>
+      <div class="rpt-summary-text">${d.summary}</div>
+    </div>
+
+    <div class="rpt-metrics">
+      ${d.metrics.map(m => `
+        <div class="rpt-metric">
+          <div class="rpt-metric-label">${m.label}</div>
+          <div class="rpt-metric-value">${m.value}</div>
+          <div class="rpt-metric-delta rpt-${m.deltaDir}">${m.delta}</div>
+          <div class="rpt-metric-detail">${m.detail}</div>
+        </div>`).join('')}
+    </div>
+
+    <div class="rpt-channels">
+      <div class="rpt-ch-label">Channel performance</div>
+      ${d.channels.map(ch => `
+        <div class="rpt-ch-row">
+          <div class="rpt-ch-name">${ch.name}</div>
+          <div class="rpt-ch-bar-wrap"><div class="rpt-ch-bar" style="width:${ch.barW};background:${ch.barC}"></div></div>
+          <div class="rpt-ch-cpl rpt-${ch.cplDir}">${ch.cpl}</div>
+          <div class="rpt-ch-leases">${ch.leases}</div>
+        </div>`).join('')}
+      <div style="display:flex;justify-content:space-between;margin-top:8px;font-family:'DM Mono',monospace;font-size:9px;color:#8a8680;letter-spacing:0.04em">
+        <span>Bar width = cost efficiency</span><span>Right col = leases signed</span>
+      </div>
+    </div>
+
+    <div class="rpt-renewal">
+      <div class="rpt-renewal-top">
+        <div class="rpt-renewal-label">Renewal tracker</div>
+        <div class="rpt-renewal-total">${r.total} units · 90-day window</div>
+      </div>
+      <div class="rpt-renewal-track">
+        ${segs.map(s => `<div class="rpt-renewal-seg" style="width:${(s.n/totalSegs*100).toFixed(1)}%;background:${s.c}"></div>`).join('')}
+      </div>
+      <div class="rpt-renewal-legend">
+        <div class="rpt-legend-item"><div class="rpt-legend-dot" style="background:#2a6640"></div>Confirmed (${r.confirmed})</div>
+        <div class="rpt-legend-item"><div class="rpt-legend-dot" style="background:#8a8680"></div>In progress (${r.inProgress})</div>
+        <div class="rpt-legend-item"><div class="rpt-legend-dot" style="background:#b83232"></div>At risk (${r.atRisk})</div>
+        <div class="rpt-legend-item"><div class="rpt-legend-dot" style="background:#d8d4cc"></div>Not yet contacted (${r.notContacted})</div>
+      </div>
+    </div>
+
+    <div class="rpt-flags">
+      <div class="rpt-flags-label">This month — notable signals</div>
+      ${d.flags.map(f => `
+        <div class="rpt-flag-row">
+          <div class="rpt-flag-dot" style="background:${f.dir==='pos'?'#2a6640':f.dir==='neg'?'#b83232':'#8a8680'}"></div>
+          <div class="rpt-flag-text">${f.text}</div>
+          <div class="rpt-flag-tag tag-${f.dir==='pos'?'pos':f.dir==='neg'?'neg':'neu'}">${f.tag}</div>
+        </div>`).join('')}
+    </div>
+
+    <div class="rpt-next">
+      <div class="rpt-next-label">Looking ahead — ${d.next[0] ? d.month.split(' ')[0]==='March'?'April':'March' : 'Next month'} ${d.month.split(' ')[1]}</div>
+      <div class="rpt-next-row">
+        ${d.next.map(n => `
+          <div class="rpt-next-item">
+            <div class="rpt-next-key">${n.key}</div>
+            <div class="rpt-next-val">${n.val}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="rpt-footer-bar">
+      <div class="rpt-footer-text">
+        INVO by USWOO · Property Marketing Intelligence<br>
+        Automatically generated · ${d.month}
+      </div>
+      <a href="#" class="rpt-footer-link">View full dashboard →</a>
+    </div>
+  `;
+
+  const card = document.getElementById('report-card');
+  card.classList.remove('anim'); void card.offsetWidth; card.classList.add('anim');
+}
+
+function setReport(prop, btn) {
+  document.querySelectorAll('.template-type-btn').forEach(b => {
+    if (b.onclick && b.onclick.toString().includes('setReport(')) b.classList.remove('active');
+  });
+  btn.classList.add('active');
+  curReport = prop;
+  renderReport();
+}
+
+function setReportMonth(month, btn) {
+  document.getElementById('rm-march').classList.remove('active');
+  document.getElementById('rm-feb').classList.remove('active');
+  btn.classList.add('active');
+  curReportMonth = month;
+  renderReport();
+}
+
+// Init report
+document.addEventListener('DOMContentLoaded', renderReport);
+if (document.readyState !== 'loading') renderReport();
+</script>
+</body>
+</html>
+

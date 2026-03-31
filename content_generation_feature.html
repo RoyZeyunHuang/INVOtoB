@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INVO by USWOO — AI Content Generation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ink:#1a1814;
+  --ink2:#2e2c28;
+  --ink3:#6a6660;
+  --ink4:#8a8680;
+  --paper:#faf9f6;
+  --paper2:#f2f0eb;
+  --paper3:#e8e4dc;
+  --rule:#d8d4cc;
+  --rule2:#c4c0b8;
+  --green:#2a6640;
+  --green-bg:#e8f3ec;
+  --amber:#8a5a10;
+  --amber-bg:#faeeda;
+  --blue:#1a4a7a;
+  --blue-bg:#e6f0f8;
+  --red:#b83232;
+  --serif:'Source Serif 4',Georgia,serif;
+  --display:'Playfair Display',Georgia,serif;
+  --mono:'DM Mono',monospace;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:15px;line-height:1.75}
+
+/* ── MASTHEAD ── */
+.masthead{border-bottom:2px solid var(--ink);padding:0 48px;display:flex;align-items:center;justify-content:space-between;background:var(--paper);width:100%}
+.m-left{display:flex;align-items:center}
+.m-logo{padding:20px 0;display:flex;align-items:baseline;gap:0;border-right:1px solid var(--rule);padding-right:28px;margin-right:28px}
+.m-name{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-0.01em}
+.m-sub{font-family:var(--mono);font-size:9px;color:var(--ink3);letter-spacing:0.14em;text-transform:uppercase;margin-top:2px}
+.m-tag{font-family:var(--mono);font-size:9px;color:var(--ink3);letter-spacing:0.1em;text-transform:uppercase}
+.m-right{font-family:var(--mono);font-size:9px;color:var(--ink4);letter-spacing:0.06em}
+
+/* ── HERO ── */
+.hero{padding:64px 48px 56px;border-bottom:1px solid var(--rule)}
+.hero-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.hero-eyebrow::after{content:'';flex:1;height:0.5px;background:var(--rule);max-width:100px}
+.hero-title{font-family:var(--display);font-size:44px;font-weight:500;letter-spacing:-0.025em;line-height:1.12;color:var(--ink);margin-bottom:20px;max-width:760px}
+.hero-title em{font-style:italic;color:var(--ink3)}
+.hero-body{font-size:15px;color:var(--ink2);line-height:1.85;max-width:560px;margin-bottom:28px}
+.hero-platforms{display:flex;gap:10px}
+.platform-pill{font-family:var(--mono);font-size:9px;padding:5px 14px;border:1px solid var(--rule2);color:var(--ink3);letter-spacing:0.08em;text-transform:uppercase}
+
+/* ── SECTION ── */
+.section{padding:56px 48px;border-bottom:1px solid var(--rule)}
+.section-label{font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink4);margin-bottom:8px}
+.section-title{font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-0.015em;margin-bottom:10px}
+.section-desc{font-size:13.5px;color:var(--ink3);line-height:1.75;max-width:600px;margin-bottom:36px}
+
+/* ── MODULE 1: MATERIAL LIBRARY ── */
+.layers-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:0}
+.layer-card{background:var(--paper);padding:22px 20px;cursor:pointer;transition:background 0.15s;position:relative;border-bottom:2px solid transparent}
+.layer-card:hover{background:var(--paper2)}
+.layer-card.active{background:var(--paper2);border-bottom-color:var(--ink)}
+.layer-num{font-family:var(--mono);font-size:9px;color:var(--ink4);letter-spacing:0.1em;margin-bottom:10px}
+.layer-name{font-family:var(--display);font-size:16px;font-weight:500;margin-bottom:6px;color:var(--ink)}
+.layer-desc{font-size:12px;color:var(--ink3);line-height:1.6}
+
+.layer-detail{display:none;border:1px solid var(--rule);border-top:none}
+.layer-detail.open{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;background:var(--rule)}
+.ld-left{background:var(--paper2);padding:28px 32px}
+.ld-right{background:var(--paper);padding:32px 40px;display:flex;align-items:center;justify-content:center}
+.ld-label{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink4);margin-bottom:10px}
+.ld-title{font-family:var(--display);font-size:20px;font-weight:500;margin-bottom:12px}
+.ld-body{font-size:13px;color:var(--ink2);line-height:1.75;margin-bottom:18px}
+.ld-tag{display:inline-block;font-family:var(--mono);font-size:8px;padding:2px 7px;border:1px solid var(--rule2);color:var(--ink3);margin-right:5px;margin-bottom:5px;letter-spacing:0.04em}
+
+/* doc chip / platform tweaks */
+.doc-chip{font-family:var(--mono);font-size:9px;padding:6px 12px;border:1px solid var(--rule2);color:var(--ink3);cursor:pointer;transition:all 0.12s;letter-spacing:0.04em;display:flex;align-items:center;gap:6px}
+.doc-chip:hover{border-color:var(--ink2);color:var(--ink2)}
+.doc-chip.selected{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.doc-chip-icon{font-size:11px;opacity:0.6}
+
+/* ── MODULE 2: GENERATION DEMO ── */
+.demo-frame{border:1px solid var(--rule);overflow:hidden}
+.demo-top{background:var(--paper2);border-bottom:1px solid var(--rule);padding:12px 20px;display:flex;align-items:center;gap:8px}
+.demo-dot{width:9px;height:9px;border-radius:50%}
+.demo-title{font-family:var(--mono);font-size:9px;color:var(--ink3);letter-spacing:0.1em;text-transform:uppercase;margin-left:6px}
+.demo-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1px;background:var(--rule)}
+
+.demo-pane{background:var(--paper);padding:24px 26px}
+.demo-pane-label{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink4);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+
+.input-area{width:100%;border:1px solid var(--rule);padding:12px 14px;font-family:var(--serif);font-size:13px;color:var(--ink2);background:var(--paper2);resize:none;line-height:1.7;outline:none;transition:border-color 0.15s}
+.input-area:focus{border-color:var(--rule2)}
+
+.doc-selector{margin-top:14px}
+.doc-selector-label{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink4);margin-bottom:8px}
+.doc-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px}
+.doc-chip{font-family:var(--mono);font-size:9px;padding:4px 10px;border:1px solid var(--rule2);color:var(--ink3);cursor:pointer;transition:all 0.12s;letter-spacing:0.04em}
+.doc-chip:hover{border-color:var(--ink2);color:var(--ink2)}
+.doc-chip.selected{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+.platform-sel{display:flex;gap:5px;margin-top:14px}
+.p-btn{font-family:var(--mono);font-size:9px;padding:6px 14px;border:1px solid var(--rule2);color:var(--ink3);cursor:pointer;transition:all 0.12s;text-transform:uppercase;letter-spacing:0.06em;background:transparent}
+.p-btn.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* Platform mockup frames */
+.mockup-wrap{width:100%;margin:0;padding:0}
+.ig-mockup{width:100%;border:1px solid var(--rule);overflow:hidden;font-family:var(--serif);background:white;display:flex;flex-direction:column;margin:0;padding:0;line-height:normal}
+.ig-mockup-header{background:white;padding:9px 12px;display:flex;align-items:center;gap:9px;border-bottom:0.5px solid var(--rule);flex-shrink:0;line-height:normal}
+.ig-avatar{width:28px;height:28px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:white;flex-shrink:0}
+.ig-handle{font-family:var(--mono);font-size:10px;color:var(--ink);font-weight:500;line-height:1.3}
+.ig-sub{font-family:var(--mono);font-size:8px;color:var(--ink3);line-height:1.4;margin-top:2px}
+.ig-image{background:var(--paper3);aspect-ratio:4/5;width:100%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ig-image-label{font-family:var(--mono);font-size:9px;color:var(--ink4);letter-spacing:0.08em;text-transform:uppercase}
+.ig-body{padding:10px 12px;background:white;flex-shrink:0}
+.ig-actions{display:flex;gap:12px;margin-bottom:6px;font-family:var(--mono);font-size:11px;color:var(--ink3);line-height:1}
+.ig-caption{font-size:12px;color:var(--ink2);line-height:1.7;white-space:pre-wrap}
+.ig-tags{font-size:11px;color:var(--blue);margin-top:6px;line-height:1.6}
+
+.li-mockup{width:100%;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.li-mockup-header{background:var(--paper2);padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--rule)}
+.li-avatar{width:36px;height:36px;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--paper);flex-shrink:0}
+.li-name{font-family:var(--mono);font-size:10px;color:var(--ink);font-weight:500}
+.li-sub{font-family:var(--mono);font-size:8px;color:var(--ink3);margin-top:1px}
+.li-body{padding:14px 16px;font-size:12px;color:var(--ink2);line-height:1.8;white-space:pre-wrap}
+.li-actions{padding:8px 16px;border-top:1px solid var(--rule);display:flex;gap:16px;font-family:var(--mono);font-size:9px;color:var(--ink3)}
+
+.gen-btn{margin-top:14px;width:100%;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;border:1px solid var(--ink);padding:10px;cursor:pointer;color:var(--paper);background:var(--ink);transition:opacity 0.15s}
+.gen-btn:hover{opacity:0.85}
+.gen-btn:disabled{opacity:0.4;cursor:not-allowed}
+
+.output-area{position:relative;line-height:0;font-size:0}
+.output-placeholder{color:var(--ink4);font-size:13px;font-style:italic;line-height:1.7;display:block}
+.output-text{font-size:13.5px;color:var(--ink2);line-height:1.85;white-space:pre-wrap;display:block}
+.output-meta{margin-top:14px;padding-top:12px;border-top:1px solid var(--rule);display:flex;gap:8px;flex-wrap:wrap}
+.output-tag{font-family:var(--mono);font-size:10px;padding:5px 12px;border:1px solid;letter-spacing:0.06em;text-transform:uppercase}
+.cursor{display:inline-block;width:2px;height:14px;background:var(--ink);animation:blink 0.8s steps(1) infinite;vertical-align:middle;margin-left:1px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.generating-label{font-family:var(--mono);font-size:9px;color:var(--ink3);letter-spacing:0.08em;margin-bottom:10px;display:none;align-items:center;gap:6px}
+.generating-label.show{display:flex}
+.gen-dot{width:4px;height:4px;border-radius:50%;background:var(--ink3);animation:genpulse 1s ease-in-out infinite}
+.gen-dot:nth-child(2){animation-delay:0.2s}
+.gen-dot:nth-child(3){animation-delay:0.4s}
+@keyframes genpulse{0%,100%{opacity:0.3}50%{opacity:1}}
+
+/* ── MODULE 3: OUTPUT SHOWCASE ── */
+.showcase-tabs{display:flex;gap:0;border-bottom:1px solid var(--rule);margin-bottom:0}
+.stab{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:12px 20px;cursor:pointer;color:var(--ink3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.12s}
+.stab:hover{color:var(--ink2)}
+.stab.active{color:var(--ink);border-bottom-color:var(--ink)}
+.showcase-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.showcase-card{background:var(--paper);padding:24px 22px}
+.sc-persona-bar{height:3px;width:100%;margin-bottom:14px;background:var(--paper3)}
+.sc-persona-fill{height:100%;transition:width 0.3s}
+.sc-persona-label{font-family:var(--mono);font-size:8px;color:var(--ink4);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;display:flex;justify-content:space-between}
+.sc-platform{font-family:var(--mono);font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink4);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sc-platform-dot{width:5px;height:5px;border-radius:50%}
+.sc-style{font-family:var(--display);font-size:15px;font-weight:500;color:var(--ink);margin-bottom:12px}
+.sc-text{font-size:12.5px;color:var(--ink2);line-height:1.8;margin-bottom:14px;white-space:pre-wrap}
+.sc-tags{display:flex;gap:4px;flex-wrap:wrap}
+.sc-tag{font-family:var(--mono);font-size:8px;padding:2px 6px;border:1px solid var(--rule2);color:var(--ink3);letter-spacing:0.03em}
+.sc-divider{height:0.5px;background:var(--rule);margin:12px 0}
+.sc-meta{font-family:var(--mono);font-size:9px;color:var(--ink4);letter-spacing:0.04em;line-height:1.7}
+
+/* animations */
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.fadein{animation:fadeIn 0.2s ease forwards}
+
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--paper2)}::-webkit-scrollbar-thumb{background:var(--rule2);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="m-left">
+    <div class="m-logo">
+      <div>
+        <div class="m-name">INVO <em style="font-style:italic;font-weight:300;opacity:0.45;font-size:0.78em;letter-spacing:0.02em">by USWOO</em></div>
+        <div class="m-sub">Property Marketing Intelligence</div>
+      </div>
+    </div>
+    <div class="m-tag">AI Content Generation</div>
+  </div>
+  <div class="m-right">Feature Overview · 2025</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Content Engine</div>
+  <div class="hero-title">Your brand voice,<br><em>at scale.</em></div>
+  <div class="hero-body">INVO generates on-brand Instagram and LinkedIn content for your properties — trained on your brand rules, your building knowledge, and your tone. Every post sounds like you wrote it. None of them required a copywriter.</div>
+  <div class="hero-platforms">
+    <div class="platform-pill">Instagram</div>
+    <div class="platform-pill">LinkedIn</div>
+    <div class="platform-pill">English</div>
+    <div class="platform-pill">Brand-consistent</div>
+  </div>
+</div>
+
+<!-- ═══ MODULE 1: MATERIAL LIBRARY ═══ -->
+<div class="section">
+  <div class="section-label">Module 01</div>
+  <div class="section-title">The material library</div>
+  <div class="section-desc">Every piece of content is built from four layers of brand intelligence. Your team loads the library once — the AI draws from it every time it writes. Select a layer to see how it works.</div>
+
+  <div class="layers-grid" id="layers-grid">
+    <div class="layer-card active" onclick="setLayer(0,this)">
+      <div class="layer-num">Layer 01</div>
+      <div class="layer-name">Brand Rules</div>
+      <div class="layer-desc">Hard constraints. What the AI must always follow and never break.</div>
+      <div class="layer-arrow">›</div>
+    </div>
+    <div class="layer-card" onclick="setLayer(1,this)">
+      <div class="layer-num">Layer 02</div>
+      <div class="layer-name">Knowledge Base</div>
+      <div class="layer-desc">Building facts, amenities, neighbourhood context. Referenced on demand.</div>
+      <div class="layer-arrow">›</div>
+    </div>
+    <div class="layer-card" onclick="setLayer(2,this)">
+      <div class="layer-num">Layer 03</div>
+      <div class="layer-name">Brand Persona</div>
+      <div class="layer-desc">Voice, tone, personality. Adjustable from subtle to deeply embedded.</div>
+      <div class="layer-arrow">›</div>
+    </div>
+    <div class="layer-card" onclick="setLayer(3,this)">
+      <div class="layer-num">Layer 04</div>
+      <div class="layer-name">Task Format</div>
+      <div class="layer-desc">Post structure, caption length, hashtag rules, CTA patterns by platform.</div>
+      <div class="layer-arrow">›</div>
+    </div>
+  </div>
+
+  <div class="layer-detail open" id="layer-detail"></div>
+</div>
+
+<!-- ═══ MODULE 2: GENERATION DEMO ═══ -->
+<div class="section">
+  <div class="section-label">Module 02</div>
+  <div class="section-title">Live generation demo</div>
+  <div class="section-desc">Enter a brief, select your brand materials, choose a platform. INVO assembles the prompt and writes the post. Switch materials to see how the output changes.</div>
+
+  <div class="demo-frame">
+    <div class="demo-top">
+      <div class="demo-dot" style="background:#e0dbd0"></div>
+      <div class="demo-dot" style="background:#e0dbd0"></div>
+      <div class="demo-dot" style="background:#e0dbd0"></div>
+      <div class="demo-title">INVO Content Engine · Live Preview</div>
+    </div>
+    <div class="demo-body">
+
+      <!-- Left: Input -->
+      <div class="demo-pane">
+        <div class="demo-pane-label">Brief</div>
+        <textarea class="input-area" id="user-input" rows="4" placeholder="Describe what you want to post about...">Announce the newly opened rooftop terrace at Sable NJ. Sunset views, seating for 40 residents, now open to all residents daily from 7am–11pm.</textarea>
+
+        <div class="doc-selector">
+          <div class="doc-selector-label">Brand rules</div>
+          <div class="doc-chips">
+            <div class="doc-chip selected" onclick="toggleChip(this,'rule')">Sable Brand Standards</div>
+            <div class="doc-chip" onclick="toggleChip(this,'rule')">Corporate Tone Guide</div>
+          </div>
+        </div>
+
+        <div class="doc-selector">
+          <div class="doc-selector-label">Knowledge</div>
+          <div class="doc-chips">
+            <div class="doc-chip selected" onclick="toggleChip(this,'knowledge')">Sable Building Facts</div>
+            <div class="doc-chip" onclick="toggleChip(this,'knowledge')">Journal Square Neighbourhood</div>
+            <div class="doc-chip" onclick="toggleChip(this,'knowledge')">NYC Rental Market Q1 2025</div>
+          </div>
+        </div>
+
+        <div class="doc-selector">
+          <div class="doc-selector-label">Persona</div>
+          <div class="doc-chips">
+            <div class="doc-chip selected" onclick="toggleChip(this,'persona')">Aspirational · Warm</div>
+            <div class="doc-chip" onclick="toggleChip(this,'persona')">Professional · Direct</div>
+          </div>
+        </div>
+
+        <div class="doc-selector">
+          <div class="doc-selector-label">Platform</div>
+          <div class="platform-sel">
+            <button class="p-btn active" onclick="setPlatform('instagram',this)">Instagram</button>
+            <button class="p-btn" onclick="setPlatform('linkedin',this)">LinkedIn</button>
+          </div>
+        </div>
+
+        <button class="gen-btn" id="gen-btn" onclick="generate()">Generate content →</button>
+      </div>
+
+      <!-- Right: Output -->
+      <div class="demo-pane">
+        <div class="demo-pane-label">Generated output</div>
+        <div class="generating-label" id="gen-label"></div>
+        <div class="output-area">
+          <div id="output-text" style="font-size:0;line-height:0;display:block;padding:0;margin:0">
+            <span class="output-placeholder" style="font-size:13px;line-height:1.7;display:block">Your generated post will appear here. Select your materials and click Generate.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODULE 3: OUTPUT SHOWCASE ═══ -->
+<div class="section">
+  <div class="section-label">Module 03</div>
+  <div class="section-title">Same brief, different voices</div>
+  <div class="section-desc">The same property update, written three ways — different persona layers, different platforms. This is the difference brand materials make.</div>
+
+  <div class="showcase-tabs">
+    <div class="stab active" onclick="setShowcase('instagram',this)">Instagram</div>
+    <div class="stab" onclick="setShowcase('linkedin',this)">LinkedIn</div>
+  </div>
+
+  <div class="showcase-grid" id="showcase-grid"></div>
+</div>
+
+<script>
+// ── LAYER DATA ───────────────────────────────────────────────────────────────
+const layers = [
+  {
+    num:'Layer 01',name:'Brand Rules',tag:'constraint',
+    desc:'Hard constraints loaded into every prompt. The AI cannot violate these — they cover language restrictions, prohibited phrases, tone absolutes, and formatting rules. Loaded first, weighted highest.',
+    example:`SVEN JOURNAL SQUARE — BRAND STANDARDS
+
+Language
+— Always write in English. No slang, abbreviations, or casual contractions in formal posts.
+— Do not reference competitor buildings by name.
+— Avoid superlatives ("best," "most," "number one") unless citing a third-party source.
+
+Tone
+— Warm but never casual. Aspirational but grounded in real life.
+— Lead with resident experience, not specifications.
+— Never use exclamation marks in LinkedIn posts.
+
+Content restrictions
+— Do not publish pricing without legal review.
+— Amenity claims must reflect current operational status only.`,
+    tags:['Always applied','Priority weighted','Hard constraint']
+  },
+  {
+    num:'Layer 02',name:'Knowledge Base',tag:'reference',
+    desc:'Building facts, unit specs, amenity details, neighbourhood context. The AI pulls from this when it needs specifics — addresses, floor counts, opening hours, proximity to transit. Referenced on demand, not force-fed into every prompt.',
+    example:`SVEN JOURNAL SQUARE — BUILDING FACTS
+
+Location: 100 Avenue at Port Imperial, Jersey City, NJ 07302
+Units: 240 residential units across 32 floors
+Completion: Q3 2023
+
+Amenities (operational)
+— Rooftop terrace: Floor 32, open daily 7am–11pm, seating for 40
+— Fitness centre: Floor 3, 24/7 key fob access
+— Resident lounge: Floor 2, bookable via app
+— Co-working studio: Floor 4, 8am–10pm
+
+Transit
+— PATH Journal Square: 4-minute walk
+— Manhattan (33rd St): 28 minutes via PATH, one seat`,
+    tags:['Referenced on demand','No truncation','Factual accuracy']
+  },
+  {
+    num:'Layer 03',name:'Brand Persona',tag:'style',
+    desc:'The voice and personality behind the writing. Loaded at an adjustable intensity — from a subtle influence on word choice, to deeply embedded character that shapes every sentence. One persona per generation run.',
+    example:`SVEN — ASPIRATIONAL · WARM PERSONA
+
+Voice character
+This is a building that takes pride in the small details — the way morning light hits the lobby, the quiet efficiency of a well-run home. Write as someone who genuinely cares about how residents experience their space.
+
+Tone markers
+— Use concrete sensory detail over abstract claims ("the smell of fresh coffee in the lounge" not "world-class amenities")
+— Short sentences land harder than long ones. Mix them.
+— The reader already chose to live here. Speak to that good decision.
+
+What to avoid
+— Hollow corporate warmth ("we care about your experience")
+— Listing features without connecting them to how they feel`,
+    tags:['Adjustable intensity','One per run','Shapes every sentence']
+  },
+  {
+    num:'Layer 04',name:'Task Format',tag:'format',
+    desc:'Platform-specific structure rules. Instagram caption format differs from LinkedIn. This layer tells the AI how long to write, how to open, how many hashtags to use, where to place the CTA, and how to close.',
+    example:`INSTAGRAM POST FORMAT — SVEN
+
+Structure
+1. Opening hook (1–2 lines, no hashtags, no emojis in line 1)
+2. Body (3–5 lines max, break for breathing room)
+3. CTA (one clear action — DM, link in bio, or visit)
+4. Hashtags (8–12, mix of brand + local + lifestyle)
+
+Rules
+— First line must work as a standalone teaser in the feed preview
+— Do not start with "We" or "Our"
+— One emoji per post maximum; place at natural pause point
+— Always end with #SableJournalSquare
+
+LinkedIn Post Format — SVEN
+— 150–250 words
+— Professional register, no emoji
+— Open with a statement of fact or observation
+— One CTA at the end, not a question`,
+    tags:['Platform-specific','Structure rules','CTA patterns']
+  }
+];
+
+const layerColors = ['#b8d9c4','#b5cfe8','#e8d5b0','#d4c4e0'];
+const layerAccents = ['#2a6640','#1a4a7a','#8a5a10','#6a3a8a'];
+const layerLetters = ['R','K','P','F'];
+
+function buildStackSVG(activeIdx) {
+  const items = ['Brand Rules','Knowledge','Persona','Format'];
+  const h = 48, gap = 6, w = 260, total = items.length;
+  const svgH = total * h + (total-1) * gap + 60;
+  let rects = '';
+  items.forEach((name, i) => {
+    const y = (total - 1 - i) * (h + gap);
+    const isActive = i === activeIdx;
+    const col = isActive ? layerColors[i] : '#e8e4dc';
+    const tcol = isActive ? layerAccents[i] : '#8a8680';
+    const strokeW = isActive ? '1.5' : '0.5';
+    const strokeC = isActive ? layerAccents[i] : '#c4c0b8';
+    rects += `
+      <g style="cursor:pointer" onclick="setLayer(${i}, document.querySelectorAll('.layer-card')[${i}])">
+        <rect x="0" y="${y}" width="${w}" height="${h}" rx="2" fill="${col}" stroke="${strokeC}" stroke-width="${strokeW}"/>
+        <text x="12" y="${y+16}" font-family="'DM Mono',monospace" font-size="8" fill="${tcol}" letter-spacing="1" text-transform="uppercase" style="text-transform:uppercase">${layerLetters[i]}0${i+1}</text>
+        <text x="12" y="${y+32}" font-family="'Source Serif 4',Georgia,serif" font-size="13" fill="${isActive ? '#1a1814' : '#8a8680'}" font-weight="${isActive?'500':'400'}">${name}</text>
+        ${isActive ? `<rect x="${w-6}" y="${y}" width="6" height="${h}" rx="0" fill="${layerAccents[i]}"/>` : ''}
+      </g>`;
+  });
+  // arrow + output box
+  const arrowY = total * (h + gap) + 4;
+  rects += `
+    <line x1="${w/2}" y1="${arrowY}" x2="${w/2}" y2="${arrowY+16}" stroke="#8a8680" stroke-width="1"/>
+    <polygon points="${w/2-5},${arrowY+16} ${w/2+5},${arrowY+16} ${w/2},${arrowY+24}" fill="#8a8680"/>
+    <rect x="0" y="${arrowY+26}" width="${w}" height="38" rx="2" fill="#1a1814"/>
+    <text x="${w/2}" y="${arrowY+45}" font-family="'DM Mono',monospace" font-size="9" fill="white" text-anchor="middle" dominant-baseline="middle" letter-spacing="2">GENERATED POST</text>`;
+  return `<svg width="100%" viewBox="0 0 ${w} ${svgH+6}" xmlns="http://www.w3.org/2000/svg" style="display:block;max-width:280px">${rects}</svg>`;
+}
+
+function setLayer(idx, el) {
+  document.querySelectorAll('.layer-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const l = layers[idx];
+  const detail = document.getElementById('layer-detail');
+  detail.className = 'layer-detail open fadein';
+  detail.innerHTML = `
+    <div class="ld-left">
+      <div class="ld-label">${l.num} · ${l.tag}</div>
+      <div class="ld-title">${l.name}</div>
+      <div class="ld-body">${l.desc}</div>
+      <div>${l.tags.map(t => `<span class="ld-tag">${t}</span>`).join('')}</div>
+    </div>
+    <div class="ld-right">${buildStackSVG(idx)}</div>
+  `;
+}
+setLayer(0, document.querySelector('.layer-card'));
+
+// ── GENERATION DEMO ──────────────────────────────────────────────────────────
+let curPlatform = 'instagram';
+
+function toggleChip(el) {
+  el.classList.toggle('selected');
+}
+
+function setPlatform(p, btn) {
+  curPlatform = p;
+  document.querySelectorAll('.p-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+const outputs = {
+  instagram: {
+    warm: `The rooftop is open. ✦
+
+Floor 32. Sunset from the Jersey City skyline. Seating for 40. No reservation needed — just take the elevator up.
+
+Sable residents have been asking about this one since day one. We're glad it was worth the wait.
+
+Daily, 7am to 11pm. Come up tonight.
+
+#SableJournalSquare #JerseyCityLiving #JerseyCityLiving #RooftopViews #NYCViews #ResidentLife #NewYorkCityApartments #LuxuryLiving #JerseyCityNJ #PathTrain #ManhattanViews #HomeAboveTheCity`,
+    professional: `New amenity update for Sable NJ residents.
+
+The rooftop terrace on Floor 32 is now open to all residents — daily from 7am to 11pm, no booking required.
+
+Capacity: 40 seats. Views: Manhattan skyline, unobstructed.
+
+Details at the front desk or via the resident app.
+
+#SableJournalSquare #JerseyCityLiving #NewAmenity #ResidentUpdate #JerseyCityLiving`
+  },
+  linkedin: {
+    warm: `There's a floor 32 rooftop terrace at Sable NJ. It opens today.
+
+We've been watching this space take shape for months — the seating, the sightlines, the small details that make a shared space feel worth using. Today, residents get to decide for themselves.
+
+Open daily, 7am to 11pm. No reservations. Just the Manhattan skyline and a decent excuse to stop working early.
+
+For leasing enquiries or to learn more about life at Sable NJ, reach out via the link below.
+
+#SableJournalSquare #JerseyCityRealEstate #PropertyManagement #ResidentExperience #JerseyCityLiving #MultifamilyLiving`,
+    professional: `Sable NJ — Amenity Update
+
+The rooftop terrace on Floor 32 is now operational and open to all current residents.
+
+Specifications:
+— Seating capacity: 40
+— Hours: 7:00am – 11:00pm daily
+— Access: Key fob, no advance booking required
+— Views: Unobstructed Manhattan and Hudson County skyline
+
+This addition completes Phase 2 of the building's amenity programme. Leasing enquiries for available units welcome via the link in our profile.
+
+#SableJournalSquare #JerseyCityRealEstate #MultifamilyDevelopment #PropertyManagement`
+  }
+};
+
+let isGenerating = false;
+
+function splitHashtags(text) {
+  const lines = text.split('\n');
+  const tagLine = lines.findIndex(l => l.trim().startsWith('#'));
+  if (tagLine === -1) return {body: text, tags: ''};
+  return {
+    body: lines.slice(0, tagLine).join('\n').trim(),
+    tags: lines.slice(tagLine).join(' ').trim()
+  };
+}
+
+function buildIgMockup(text, isTyping) {
+  const {body, tags} = splitHashtags(text);
+  const svgEl = document.getElementById('nyc-rooftop-svg');
+  let imgHtml = '<div class="ig-image"><span class="ig-image-label">Photo / Video</span></div>';
+  if (svgEl) {
+    const clone = svgEl.cloneNode(true);
+    clone.removeAttribute('id');
+    clone.style.display = 'block';
+    clone.style.position = '';
+    clone.style.left = '';
+    imgHtml = clone.outerHTML;
+  }
+  const tagsHtml = tags && !isTyping ? '<div class="ig-tags">'+tags+'</div>' : '';
+  const captionHtml = '<div class="ig-caption">'+body.replace(/\n/g,'<br>')+(isTyping?'<span class="cursor"></span>':'')+' </div>';
+  return '<div class="ig-mockup">'
+    +'<div class="ig-mockup-header"><div class="ig-avatar">SNJ</div><div><div class="ig-handle">sablenjofficial</div><div class="ig-sub">Jersey City, NJ</div></div></div>'
+    +imgHtml
+    +'<div class="ig-body"><div class="ig-actions">♥ &nbsp;&nbsp; ◻ &nbsp;&nbsp; ➤</div>'
+    +captionHtml
+    +tagsHtml
+    +'</div></div>';
+}
+
+function buildLiMockup(text, isTyping) {
+  return `<div class="li-mockup" style="margin:0">
+    <div class="li-mockup-header">
+      <div class="li-avatar">SNJ</div>
+      <div><div class="li-name">Sable NJ</div><div class="li-sub">Property · Jersey City, NJ · 1st</div></div>
+    </div>
+    <div class="li-body">${text.replace(/\n/g,'<br>')}${isTyping?'<span class="cursor"></span>':''}</div>
+    <div class="li-actions"><span>👍 Like</span><span>💬 Comment</span><span>↗ Share</span></div>
+  </div>`;
+}
+
+function generate() {
+  if (isGenerating) return;
+  const chips = [...document.querySelectorAll('.doc-chip.selected')];
+  const hasWarm = chips.some(c => c.textContent.includes('Aspirational') || c.textContent.includes('Sable Brand'));
+  const persona = hasWarm ? 'warm' : 'professional';
+  const fullText = outputs[curPlatform][persona];
+
+  isGenerating = true;
+  const btn = document.getElementById('gen-btn');
+  btn.disabled = true;
+  btn.textContent = 'Generating...';
+  const genLabel = document.getElementById('gen-label');
+  genLabel.innerHTML = '<div class="gen-dot"></div><div class="gen-dot"></div><div class="gen-dot"></div><span style="font-family:var(--mono);font-size:9px;color:var(--ink3);letter-spacing:0.08em">AI is writing</span>';
+  genLabel.classList.add('show');
+
+  const el = document.getElementById('output-text');
+  el.setAttribute('style','padding:0;margin:0;font-size:0;line-height:0;display:block');
+  let typed = '';
+  let i = 0;
+
+  function typeChar() {
+    if (i < fullText.length) {
+      typed += fullText[i];
+      const mockup = curPlatform === 'instagram' ? buildIgMockup(typed, true) : buildLiMockup(typed, true);
+      el.innerHTML = mockup;
+      i++;
+      setTimeout(typeChar, 14 + (fullText[i-1] === '\n' ? 60 : 0));
+    } else {
+      const mockup = curPlatform === 'instagram' ? buildIgMockup(fullText, false) : buildLiMockup(fullText, false);
+      el.innerHTML = mockup + `<div class="output-meta" style="margin-top:12px">
+        <span class="output-tag" style="border-color:#b8d9c4;color:#2a6640">${curPlatform === 'instagram' ? 'Instagram' : 'LinkedIn'}</span>
+        <span class="output-tag" style="border-color:var(--rule2);color:var(--ink3)">${persona === 'warm' ? 'Aspirational · Warm' : 'Professional · Direct'}</span>
+        <span class="output-tag" style="border-color:var(--rule2);color:var(--ink3)">Ready to publish</span>
+      </div>`;
+      genLabel.classList.remove('show');
+      btn.disabled = false;
+      btn.textContent = 'Regenerate →';
+      isGenerating = false;
+    }
+  }
+  typeChar();
+}
+
+// ── SHOWCASE ─────────────────────────────────────────────────────────────────
+const showcase = {
+  instagram: [
+    {
+      style:'Aspirational · Warm',
+      dot:'#2a6640',intensity:80,
+      text:`The rooftop is open. ✦\n\nFloor 32. Sunset from the Jersey City skyline. Seating for 40. No reservation needed — just take the elevator up.\n\nSable residents have been asking about this one since day one. We're glad it was worth the wait.\n\nDaily, 7am to 11pm. Come up tonight.`,
+      tags:['Warm persona · 80%','Brand rules applied','12 hashtags'],
+      meta:'Avg. engagement on warm posts: 6.2% · Best time: 6–8pm'
+    },
+    {
+      style:'Professional · Direct',
+      dot:'#1a4a7a',intensity:40,
+      text:`New amenity update for Sable NJ residents.\n\nThe rooftop terrace on Floor 32 is now open to all residents — daily from 7am to 11pm, no booking required.\n\nCapacity: 40 seats. Views: Manhattan skyline, unobstructed.\n\nDetails at the front desk or via the resident app.`,
+      tags:['Professional persona · 40%','Brand rules applied','5 hashtags'],
+      meta:'Avg. engagement on direct posts: 4.1% · Best time: 12–2pm'
+    },
+    {
+      style:'No persona — base only',
+      dot:'#8a8680',intensity:0,
+      text:`Rooftop terrace now open at Sable NJ.\n\nFloor 32. Open daily 7am–11pm. Seating for 40 residents. No reservation required.\n\nAccess via main elevator. Key fob required after 10pm.`,
+      tags:['No persona layer','Brand rules only','3 hashtags'],
+      meta:'Base output — brand rules enforced, no voice character'
+    }
+  ],
+  linkedin: [
+    {
+      style:'Aspirational · Warm',
+      dot:'#2a6640',intensity:80,
+      text:`There's a floor 32 rooftop terrace at Sable NJ. It opens today.\n\nWe've been watching this space take shape for months — the seating, the sightlines, the small details that make a shared space feel worth using. Today, residents get to decide for themselves.\n\nOpen daily, 7am to 11pm. No reservations. Just the Manhattan skyline and a decent excuse to stop working early.\n\nFor leasing enquiries, reach out via the link below.`,
+      tags:['Warm persona · 80%','LinkedIn format','Professional register'],
+      meta:'LinkedIn warm posts: 3.8% avg. engagement rate'
+    },
+    {
+      style:'Professional · Direct',
+      dot:'#1a4a7a',intensity:40,
+      text:`Sable NJ — Amenity Update\n\nThe rooftop terrace on Floor 32 is now operational and open to all current residents.\n\nSpecifications:\n— Seating capacity: 40\n— Hours: 7:00am – 11:00pm daily\n— Access: Key fob, no advance booking required\n— Views: Unobstructed Manhattan and Hudson County skyline\n\nLeasing enquiries for available units welcome via the link in our profile.`,
+      tags:['Professional persona · 40%','LinkedIn format','Structured layout'],
+      meta:'LinkedIn direct posts: 4.4% avg. engagement rate'
+    },
+    {
+      style:'Executive — minimal',
+      dot:'#8a5a10',intensity:15,
+      text:`Sable NJ rooftop terrace: now open.\n\nFloor 32. 40-person capacity. Daily access, 7am–11pm.\n\nA meaningful addition to the building's resident amenity programme. Enquiries welcome.`,
+      tags:['Minimal tone','Short form','Executive register'],
+      meta:'Short-form LinkedIn: higher share rate, lower comment volume'
+    }
+  ]
+};
+
+function setShowcase(tab, btn) {
+  document.querySelectorAll('.stab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderShowcase(tab);
+}
+
+function scIgMockup(c, svgHtml) {
+  const lines = c.text.split('\n');
+  const tagLine = lines.findIndex(l => l.trim().startsWith('#'));
+  const body = tagLine >= 0 ? lines.slice(0, tagLine).join('\n').trim() : c.text.trim();
+  const tags = tagLine >= 0 ? lines.slice(tagLine).join(' ').trim() : '';
+  return '<div class="ig-mockup" style="font-size:14px;line-height:normal">'
+    +'<div class="ig-mockup-header" style="line-height:normal">'
+    +'<div class="ig-avatar" style="width:26px;height:26px;font-size:8px">SNJ</div>'
+    +'<div><div class="ig-handle" style="font-size:9px">sablenjofficial</div>'
+    +'<div class="ig-sub">Jersey City, NJ</div></div></div>'
+    + svgHtml
+    +'<div class="ig-body" style="padding:10px 12px;line-height:normal">'
+    +'<div class="ig-actions" style="font-size:11px;margin-bottom:6px">\u2665 &nbsp; \u25fb &nbsp; \u27a4</div>'
+    +'<div style="font-size:11px;color:#2e2c28;line-height:1.7">'+body.replace(/\n/g,'<br>')+'</div>'
+    +(tags ? '<div style="font-size:10px;color:#1a4a7a;margin-top:6px;line-height:1.6">'+tags+'</div>' : '')
+    +'</div></div>';
+}
+
+function scLiMockup(c) {
+  return '<div class="li-mockup" style="line-height:normal">'
+    +'<div class="li-mockup-header" style="line-height:normal">'
+    +'<div class="li-avatar" style="width:32px;height:32px;font-size:9px">SNJ</div>'
+    +'<div><div class="li-name" style="font-size:10px">Sable NJ</div>'
+    +'<div class="li-sub">Property · Jersey City, NJ</div></div></div>'
+    +'<div class="li-body" style="font-size:11.5px;line-height:1.75;padding:12px 14px">'+c.text.replace(/\n/g,'<br>')+'</div>'
+    +'<div class="li-actions" style="font-size:9px;padding:7px 14px">'
+    +'<span>\uD83D\uDC4D Like</span><span>\uD83D\uDCAC Comment</span><span>\u2197\uFE0F Share</span></div></div>';
+}
+
+function renderShowcase(tab) {
+  const cards = showcase[tab];
+  const grid = document.getElementById('showcase-grid');
+  grid.className = 'showcase-grid fadein';
+
+  // Get SVG for IG cards
+  const svgEl = document.getElementById('nyc-rooftop-svg');
+  let svgHtml = '';
+  if (svgEl && tab === 'instagram') {
+    const clone = svgEl.cloneNode(true);
+    clone.removeAttribute('id');
+    clone.style.display = 'block';
+    clone.style.position = '';
+    clone.style.left = '';
+    clone.style.maxHeight = '160px';
+    clone.style.aspectRatio = '4/3';
+    svgHtml = clone.outerHTML;
+  }
+
+  grid.innerHTML = cards.map(c => {
+    const intensity = c.intensity || 50;
+    const barColor = c.dot;
+    const warmCool = intensity >= 70 ? 'Warm' : intensity >= 40 ? 'Balanced' : 'Minimal';
+    const mockup = tab === 'instagram' ? scIgMockup(c, svgHtml) : scLiMockup(c);
+    return `<div class="showcase-card" style="padding:16px 18px">
+      <div class="sc-style" style="margin-bottom:6px">${c.style}</div>
+      <div class="sc-persona-label">
+        <span>Persona intensity</span>
+        <span>${intensity}% · ${warmCool}</span>
+      </div>
+      <div class="sc-persona-bar" style="margin-bottom:14px"><div class="sc-persona-fill" style="width:${intensity}%;background:${barColor}"></div></div>
+      ${mockup}
+      <div class="sc-divider"></div>
+      <div class="sc-meta">${c.meta}</div>
+    </div>`;
+  }).join('');
+}
+
+renderShowcase('instagram');
+</script>
+
+<!-- Hidden NYC rooftop SVG illustration - referenced by buildIgMockup() -->
+<div id="nyc-rooftop-svg" class="ig-image" style="padding:0;overflow:hidden;background:#1a1814;aspect-ratio:4/3;width:100%;max-height:220px">
+<svg width="100%" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" style="display:block">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#0d1829"/><stop offset="35%" stop-color="#1a2d4a"/>
+<stop offset="65%" stop-color="#c4622d"/><stop offset="85%" stop-color="#e8843a"/>
+<stop offset="100%" stop-color="#f0a05a"/>
+</linearGradient>
+<linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#e8843a" stop-opacity="0.3"/>
+<stop offset="100%" stop-color="#e8843a" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="tfloor" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#2e2c28"/><stop offset="100%" stop-color="#1a1814"/>
+</linearGradient>
+<radialGradient id="vign" cx="50%" cy="50%" r="70%">
+<stop offset="0%" stop-color="black" stop-opacity="0"/>
+<stop offset="100%" stop-color="black" stop-opacity="0.45"/>
+</radialGradient>
+</defs>
+<rect width="400" height="500" fill="url(#sky)"/>
+<ellipse cx="200" cy="310" rx="220" ry="60" fill="url(#glow)"/>
+<circle cx="40" cy="40" r="1" fill="white" opacity="0.6"/>
+<circle cx="90" cy="25" r="0.8" fill="white" opacity="0.5"/>
+<circle cx="150" cy="55" r="1" fill="white" opacity="0.4"/>
+<circle cx="220" cy="30" r="0.8" fill="white" opacity="0.6"/>
+<circle cx="280" cy="50" r="1" fill="white" opacity="0.5"/>
+<circle cx="340" cy="20" r="0.8" fill="white" opacity="0.4"/>
+<circle cx="370" cy="60" r="1" fill="white" opacity="0.5"/>
+<rect x="155" y="160" width="12" height="150" fill="#0d1520" opacity="0.9"/>
+<rect x="159" y="130" width="4" height="32" fill="#0d1520" opacity="0.9"/>
+<polygon points="161,118 161,130 163,130" fill="#0d1520" opacity="0.9"/>
+<polygon points="60,180 66,180 63,100" fill="#0d1520" opacity="0.85"/>
+<rect x="57" y="180" width="12" height="120" fill="#0d1520" opacity="0.85"/>
+<rect x="20" y="220" width="25" height="80" fill="#0d1a2e" opacity="0.8"/>
+<rect x="46" y="230" width="18" height="70" fill="#0d1a2e" opacity="0.8"/>
+<rect x="72" y="210" width="22" height="90" fill="#0d1a2e" opacity="0.75"/>
+<rect x="95" y="225" width="28" height="75" fill="#0d1520" opacity="0.8"/>
+<rect x="124" y="215" width="20" height="85" fill="#0d1520" opacity="0.8"/>
+<rect x="170" y="205" width="30" height="95" fill="#0d1520" opacity="0.8"/>
+<rect x="200" y="220" width="22" height="80" fill="#0d1520" opacity="0.75"/>
+<rect x="222" y="210" width="18" height="90" fill="#0d1a2e" opacity="0.8"/>
+<rect x="240" y="225" width="25" height="75" fill="#0d1a2e" opacity="0.8"/>
+<rect x="265" y="215" width="20" height="85" fill="#0d1520" opacity="0.8"/>
+<rect x="285" y="230" width="28" height="70" fill="#0d1520" opacity="0.75"/>
+<rect x="313" y="220" width="22" height="80" fill="#0d1520" opacity="0.8"/>
+<rect x="335" y="210" width="18" height="90" fill="#0d1a2e" opacity="0.8"/>
+<rect x="353" y="225" width="30" height="75" fill="#0d1a2e" opacity="0.75"/>
+<rect x="22" y="225" width="3" height="2" fill="#f0c060" opacity="0.5"/>
+<rect x="27" y="228" width="3" height="2" fill="#f0c060" opacity="0.4"/>
+<rect x="97" y="228" width="3" height="2" fill="#f0c060" opacity="0.5"/>
+<rect x="172" y="210" width="3" height="2" fill="#f0c060" opacity="0.5"/>
+<rect x="267" y="220" width="3" height="2" fill="#f0c060" opacity="0.5"/>
+<rect x="337" y="215" width="3" height="2" fill="#f0c060" opacity="0.5"/>
+<rect x="0" y="295" width="400" height="20" fill="#0d1520" opacity="0.6"/>
+<rect x="0" y="310" width="400" height="190" fill="url(#tfloor)"/>
+<rect x="0" y="308" width="400" height="3" fill="#3a3830"/>
+<line x1="20" y1="311" x2="20" y2="325" stroke="#3a3830" stroke-width="1.5"/>
+<line x1="60" y1="311" x2="60" y2="325" stroke="#3a3830" stroke-width="1.5"/>
+<line x1="100" y1="311" x2="100" y2="325" stroke="#3a3830" stroke-width="1.5"/>
+<line x1="140" y1="311" x2="140" y2="325" stroke="#3a3830" stroke-width="1.5"/>
+<line x1="180" y1="311" x2="180" y2="325" stroke="#3a3830" stroke-width="1.5"/>
+<line x1="220" y1="311" x2="220" y2="325" stroke="#3a3830" stroke-width="1.5"/>
+<line x1="260" y1="311" x2="260" y2="325" stroke="#3a3830" stroke-width="1.5"/>
+<line x1="300" y1="311" x2="300" y2="325" stroke="#3a3830" stroke-width="1.5"/>
+<line x1="340" y1="311" x2="340" y2="325" stroke="#3a3830" stroke-width="1.5"/>
+<line x1="380" y1="311" x2="380" y2="325" stroke="#3a3830" stroke-width="1.5"/>
+<rect x="30" y="345" width="55" height="22" rx="3" fill="#2a2824"/>
+<rect x="25" y="340" width="65" height="12" rx="3" fill="#3a3630"/>
+<rect x="315" y="345" width="55" height="22" rx="3" fill="#2a2824"/>
+<rect x="310" y="340" width="65" height="12" rx="3" fill="#3a3630"/>
+<rect x="170" y="352" width="60" height="28" rx="4" fill="#252320"/>
+<rect x="172" y="350" width="56" height="4" rx="2" fill="#3a3630"/>
+<rect x="197" y="344" width="6" height="10" fill="#e8d0a0" opacity="0.7"/>
+<ellipse cx="200" cy="344" rx="4" ry="3" fill="#f0c060" opacity="0.6"/>
+<rect x="140" y="330" width="3" height="30" fill="#3a3630"/>
+<ellipse cx="141" cy="330" rx="8" ry="3" fill="#f0c060" opacity="0.3"/>
+<rect x="258" y="330" width="3" height="30" fill="#3a3630"/>
+<ellipse cx="259" cy="330" rx="8" ry="3" fill="#f0c060" opacity="0.3"/>
+<rect width="400" height="500" fill="url(#vign)"/>
+</svg>
+</div>
+<style>#nyc-rooftop-svg{display:none!important;position:absolute;left:-9999px}</style>
+
+</body>
+</html>
