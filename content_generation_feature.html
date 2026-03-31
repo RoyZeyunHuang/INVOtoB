@@ -117,6 +117,9 @@ body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size
 .ig-image{background:var(--paper3);aspect-ratio:4/5;width:100%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .ig-image.ig-image--video{aspect-ratio:auto;min-height:0;padding:0;background:var(--paper3);display:block;flex-shrink:0}
 .ig-image.ig-image--video video{width:100%;max-width:100%;height:auto;display:block;vertical-align:top}
+/* Live preview only: limit demo video footprint; caption/header stay full size; video keeps aspect ratio, not cropped */
+#output-text .ig-image.ig-image--video{display:flex;align-items:center;justify-content:center;max-height:min(260px,42vh)}
+#output-text .ig-image.ig-image--video video{width:auto;height:auto;max-width:100%;max-height:min(260px,42vh);object-fit:contain}
 .ig-image-label{font-family:var(--mono);font-size:9px;color:var(--ink4);letter-spacing:0.08em;text-transform:uppercase}
 .ig-body{padding:10px 12px;background:white;flex-shrink:0}
 .ig-actions{display:flex;gap:12px;margin-bottom:6px;font-family:var(--mono);font-size:11px;color:var(--ink3);line-height:1}
@@ -536,7 +539,7 @@ function splitHashtags(text) {
   };
 }
 
-const DEMO_IG_VIDEO_SRC = '2025年_USWOO给大家带来了_17个楼的Exclusive_listings_2026_con.mp4';
+const DEMO_IG_VIDEO_SRC = '688310fa6386b5aa94888cf985350cc0.mov';
 
 function igMockupHeaderHtml() {
   return '<div class="ig-mockup-header"><div class="ig-avatar">SNJ</div><div><div class="ig-handle">sablenjofficial</div><div class="ig-sub">Jersey City, NJ</div></div></div>';
