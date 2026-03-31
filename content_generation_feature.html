@@ -266,7 +266,7 @@ body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size
       <!-- Left: Input -->
       <div class="demo-pane">
         <div class="demo-pane-label">Brief</div>
-        <textarea class="input-area" id="user-input" rows="4" placeholder="Describe what you want to post about...">Announce the newly opened rooftop terrace at Sable NJ. Sunset views, seating for 40 residents, now open to all residents daily from 7am–11pm.</textarea>
+        <textarea class="input-area" id="user-input" rows="4" placeholder="Describe what you want to post about...">Promote Namdar Tower: the NJ apartment people actually want — bright, modern, easy everyday living, city access, and a home that fits the life they're building (not just a place to stay).</textarea>
 
         <div class="doc-selector">
           <div class="doc-selector-label">Brand rules</div>
@@ -281,6 +281,7 @@ body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size
           <div class="doc-chips">
             <div class="doc-chip selected" onclick="toggleChip(this,'knowledge')">Sable Building Facts</div>
             <div class="doc-chip" onclick="toggleChip(this,'knowledge')">Journal Square Neighbourhood</div>
+            <div class="doc-chip" onclick="toggleChip(this,'knowledge')">Namdar Tower</div>
             <div class="doc-chip" onclick="toggleChip(this,'knowledge')">NYC Rental Market Q1 2025</div>
           </div>
         </div>
@@ -487,48 +488,49 @@ function setPlatform(p, btn) {
 
 const outputs = {
   instagram: {
-    warm: `The rooftop is open. ✦
+    warm: `The New Jersey apartment on everyone's wish list 🤍
+Bright, modern, and made for the kind of life that feels easy.
+The morning light.
+The city access.
+The little everyday details that make home feel really good.
+Not just a place to stay —
+a place that fits the life you're building.
+Some apartments look good online.
+This one feels even better in real life.
 
-Floor 32. Sunset from the Jersey City skyline. Seating for 40. No reservation needed — just take the elevator up.
+#NamdarTower #JerseyCity #NewJersey #NJApartments #ApartmentLiving #ModernLiving #CityLife #HomeGoals`,
+    professional: `Namdar Tower — leasing update.
 
-Sable residents have been asking about this one since day one. We're glad it was worth the wait.
+The New Jersey home profiled on every serious renter wish list: bright, modern layouts, everyday ease, and real city access — plus the small details that make a place feel like home, not just a stay.
 
-Daily, 7am to 11pm. Come up tonight.
+Some units photograph well. This one is built to feel better in person.
 
-#SableJournalSquare #JerseyCityLiving #JerseyCityLiving #RooftopViews #NYCViews #ResidentLife #NewYorkCityApartments #LuxuryLiving #JerseyCityNJ #PathTrain #ManhattanViews #HomeAboveTheCity`,
-    professional: `New amenity update for Sable NJ residents.
+Tours available — link in bio.
 
-The rooftop terrace on Floor 32 is now open to all residents — daily from 7am to 11pm, no booking required.
-
-Capacity: 40 seats. Views: Manhattan skyline, unobstructed.
-
-Details at the front desk or via the resident app.
-
-#SableJournalSquare #JerseyCityLiving #NewAmenity #ResidentUpdate #JerseyCityLiving`
+#NamdarTower #JerseyCity #NJLiving #Multifamily #Leasing`
   },
   linkedin: {
-    warm: `There's a floor 32 rooftop terrace at Sable NJ. It opens today.
+    warm: `We're introducing a Jersey City community that keeps landing on renters' wish lists — not for gimmicks, but because the fundamentals are right.
 
-We've been watching this space take shape for months — the seating, the sightlines, the small details that make a shared space feel worth using. Today, residents get to decide for themselves.
+Namdar Tower is bright and modern, designed around the kind of life that feels easy: morning light, straightforward city access, and the everyday details that make home feel genuinely good.
 
-Open daily, 7am to 11pm. No reservations. Just the Manhattan skyline and a decent excuse to stop working early.
+It's not positioned as a short-term stopgap. It's for people building a life and wanting a home that fits that trajectory.
 
-For leasing enquiries or to learn more about life at Sable NJ, reach out via the link below.
+Some apartments look compelling online. The feedback we're hearing is that this one feels even stronger in person.
 
-#SableJournalSquare #JerseyCityRealEstate #PropertyManagement #ResidentExperience #JerseyCityLiving #MultifamilyLiving`,
-    professional: `Sable NJ — Amenity Update
+For leasing conversations or a tour, reach out via the link in our profile.
 
-The rooftop terrace on Floor 32 is now operational and open to all current residents.
+#NamdarTower #JerseyCityRealEstate #MultifamilyLiving #ResidentExperience #NJLiving`,
+    professional: `Namdar Tower — New Jersey multifamily leasing brief
 
-Specifications:
-— Seating capacity: 40
-— Hours: 7:00am – 11:00pm daily
-— Access: Key fob, no advance booking required
-— Views: Unobstructed Manhattan and Hudson County skyline
+Summary:
+— Product: modern, light-filled apartments with strong access to regional employment and transit corridors.
+— Positioning: long-term housing choice (not transient "just a place to stay").
+— Differentiator: on-site experience exceeds typical marketing photography — verified through tours.
 
-This addition completes Phase 2 of the building's amenity programme. Leasing enquiries for available units welcome via the link in our profile.
+Leasing enquiries and broker questions welcome via the link in our profile.
 
-#SableJournalSquare #JerseyCityRealEstate #MultifamilyDevelopment #PropertyManagement`
+#NamdarTower #JerseyCityRealEstate #MultifamilyDevelopment #PropertyManagement #NJLiving`
   }
 };
 
@@ -548,7 +550,7 @@ const DEMO_IG_VIDEO_SRC = '688310fa6386b5aa94888cf985350cc0.mov';
 const SHOWCASE_IG_VIDEO_SRC = '8ba19174a1a2303627baa6f7ca604fb0.mov';
 
 function igMockupHeaderHtml() {
-  return '<div class="ig-mockup-header"><div class="ig-avatar">SNJ</div><div><div class="ig-handle">sablenjofficial</div><div class="ig-sub">Jersey City, NJ</div></div></div>';
+  return '<div class="ig-mockup-header"><div class="ig-avatar">NT</div><div><div class="ig-handle">namdarofficial</div><div class="ig-sub">Jersey City, NJ</div></div></div>';
 }
 
 function igMockupMediaVideoHtml() {
@@ -653,22 +655,22 @@ const showcase = {
     {
       style:'Aspirational · Warm',
       dot:'#2a6640',intensity:80,
-      text:`The rooftop is open. ✦\n\nFloor 32. Sunset from the Jersey City skyline. Seating for 40. No reservation needed — just take the elevator up.\n\nSable residents have been asking about this one since day one. We're glad it was worth the wait.\n\nDaily, 7am to 11pm. Come up tonight.`,
-      tags:['Warm persona · 80%','Brand rules applied','12 hashtags'],
+      text:`The New Jersey apartment on everyone's wish list 🤍\n\nBright, modern, and made for the kind of life that feels easy.\n\nThe morning light.\nThe city access.\nThe little everyday details that make home feel really good.\n\nNot just a place to stay —\na place that fits the life you're building.\n\nSome apartments look good online.\nThis one feels even better in real life.`,
+      tags:['Warm persona · 80%','Brand rules applied','8 hashtags'],
       meta:'Avg. engagement on warm posts: 6.2% · Best time: 6–8pm'
     },
     {
       style:'Professional · Direct',
       dot:'#1a4a7a',intensity:40,
-      text:`New amenity update for Sable NJ residents.\n\nThe rooftop terrace on Floor 32 is now open to all residents — daily from 7am to 11pm, no booking required.\n\nCapacity: 40 seats. Views: Manhattan skyline, unobstructed.\n\nDetails at the front desk or via the resident app.`,
+      text:`Namdar Tower — leasing update.\n\nThe New Jersey home on serious renter wish lists: bright, modern layouts, everyday ease, real city access, and details that feel like home — not just a stay.\n\nSome units photograph well. This one feels better in person.\n\nTours available — link in bio.`,
       tags:['Professional persona · 40%','Brand rules applied','5 hashtags'],
       meta:'Avg. engagement on direct posts: 4.1% · Best time: 12–2pm'
     },
     {
       style:'No persona — base only',
       dot:'#8a8680',intensity:0,
-      text:`Rooftop terrace now open at Sable NJ.\n\nFloor 32. Open daily 7am–11pm. Seating for 40 residents. No reservation required.\n\nAccess via main elevator. Key fob required after 10pm.`,
-      tags:['No persona layer','Brand rules only','3 hashtags'],
+      text:`Namdar Tower, Jersey City.\n\nBright, modern NJ apartments — city access, everyday comfort, built for the life you're growing into.\n\nLooks good online. Reportedly even better in person.\n\nTours: link in bio.`,
+      tags:['No persona layer','Brand rules only','Short form'],
       meta:'Base output — brand rules enforced, no voice character'
     }
   ],
@@ -676,21 +678,21 @@ const showcase = {
     {
       style:'Aspirational · Warm',
       dot:'#2a6640',intensity:80,
-      text:`There's a floor 32 rooftop terrace at Sable NJ. It opens today.\n\nWe've been watching this space take shape for months — the seating, the sightlines, the small details that make a shared space feel worth using. Today, residents get to decide for themselves.\n\nOpen daily, 7am to 11pm. No reservations. Just the Manhattan skyline and a decent excuse to stop working early.\n\nFor leasing enquiries, reach out via the link below.`,
+      text:`We're introducing a Jersey City community that keeps landing on renters' wish lists — not for gimmicks, but because the fundamentals are right.\n\nNamdar Tower is bright and modern, designed around everyday ease: morning light, city access, and the details that make home feel genuinely good.\n\nIt's for people building a life — not a short-term stopgap.\n\nFeedback so far: strong online, even stronger in person.\n\nLeasing or tours: link in profile.`,
       tags:['Warm persona · 80%','LinkedIn format','Professional register'],
       meta:'LinkedIn warm posts: 3.8% avg. engagement rate'
     },
     {
       style:'Professional · Direct',
       dot:'#1a4a7a',intensity:40,
-      text:`Sable NJ — Amenity Update\n\nThe rooftop terrace on Floor 32 is now operational and open to all current residents.\n\nSpecifications:\n— Seating capacity: 40\n— Hours: 7:00am – 11:00pm daily\n— Access: Key fob, no advance booking required\n— Views: Unobstructed Manhattan and Hudson County skyline\n\nLeasing enquiries for available units welcome via the link in our profile.`,
+      text:`Namdar Tower — New Jersey multifamily leasing brief\n\nSummary:\n— Product: modern, light-filled apartments with strong regional access.\n— Positioning: long-term housing (not transient stay).\n— Differentiator: on-site experience exceeds typical marketing stills — verified on tour.\n\nLeasing and broker enquiries: link in profile.`,
       tags:['Professional persona · 40%','LinkedIn format','Structured layout'],
       meta:'LinkedIn direct posts: 4.4% avg. engagement rate'
     },
     {
       style:'Executive — minimal',
       dot:'#8a5a10',intensity:15,
-      text:`Sable NJ rooftop terrace: now open.\n\nFloor 32. 40-person capacity. Daily access, 7am–11pm.\n\nA meaningful addition to the building's resident amenity programme. Enquiries welcome.`,
+      text:`Namdar Tower (Jersey City): high-demand NJ rental product — modern, accessible, built for resident life beyond the lease term.\n\nTours recommended. Enquiries welcome.`,
       tags:['Minimal tone','Short form','Executive register'],
       meta:'Short-form LinkedIn: higher share rate, lower comment volume'
     }
@@ -710,8 +712,8 @@ function scIgMockup(c, mediaHtml) {
   const tags = tagLine >= 0 ? lines.slice(tagLine).join(' ').trim() : '';
   return '<div class="ig-mockup" style="font-size:14px;line-height:normal">'
     +'<div class="ig-mockup-header" style="line-height:normal">'
-    +'<div class="ig-avatar" style="width:26px;height:26px;font-size:8px">SNJ</div>'
-    +'<div><div class="ig-handle" style="font-size:9px">sablenjofficial</div>'
+    +'<div class="ig-avatar" style="width:26px;height:26px;font-size:8px">NT</div>'
+    +'<div><div class="ig-handle" style="font-size:9px">namdarofficial</div>'
     +'<div class="ig-sub">Jersey City, NJ</div></div></div>'
     + mediaHtml
     +'<div class="ig-body" style="padding:10px 12px;line-height:normal">'
@@ -872,7 +874,7 @@ renderShowcase('instagram');
             <!-- bottom caption bar -->
             <div style="position:absolute;bottom:0;left:0;right:0;z-index:1;padding:10px 10px 12px;background:linear-gradient(transparent,rgba(26,24,20,0.7))">
               <div style="font-family:var(--mono);font-size:7px;color:rgba(255,255,255,0.7);letter-spacing:0.06em">SABLE NJ · JERSEY CITY</div>
-              <div style="font-family:var(--serif);font-size:9px;color:#fff;margin-top:2px;line-height:1.4">The rooftop is open.</div>
+              <div style="font-family:var(--serif);font-size:9px;color:#fff;margin-top:2px;line-height:1.4">The NJ apartment on everyone's wish list 🤍</div>
             </div>
           </div>
           <!-- home bar -->

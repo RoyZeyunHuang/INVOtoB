@@ -429,7 +429,7 @@ html,body{width:100%}body{background:var(--paper);color:var(--ink);font-family:v
   </div>
   <div class="masthead-center">
     <div>
-      <div class="building-name">Sable — Journal Square</div>
+      <div class="building-name">Famous Tower</div>
       <div class="building-sub">Jersey City, NJ · 240 units</div>
     </div>
   </div>
@@ -1139,7 +1139,7 @@ html,body{width:100%}body{background:var(--paper);color:var(--ink);font-family:v
     <div style="display:flex;flex-direction:column;gap:1px;background:var(--rule)">
       <div class="panel">
         <div class="panel-hed">Social growth — select competitor for content themes</div>
-        <div class="soc-row" onclick="toggleSoc('soc-you',this)"><span class="soc-name you">You (Sable)</span><div class="soc-track"><div class="soc-fill" style="width:90%;background:var(--green)"></div></div><span class="soc-pct pos">+12%</span><span class="soc-chev">›</span></div>
+        <div class="soc-row" onclick="toggleSoc('soc-you',this)"><span class="soc-name you">You (Famous Tower)</span><div class="soc-track"><div class="soc-fill" style="width:90%;background:var(--green)"></div></div><span class="soc-pct pos">+12%</span><span class="soc-chev">›</span></div>
         <div class="soc-exp" id="soc-you"><div style="font-family:var(--mono);font-size:9px;color:var(--ink3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Your top content</div><div style="font-size:12px;color:var(--ink2);margin-bottom:3px">Rooftop terrace video — 34 inquiries, 8.4% engagement</div><div style="font-size:12px;color:var(--ink2);margin-bottom:3px">Move-in day reel — 18 inquiries, 6.1% engagement</div><div style="font-size:12px;color:var(--ink2)">Unit tour walkthrough — 12 inquiries, 4.9% engagement</div></div>
         <div class="soc-row" onclick="toggleSoc('soc-q',this)"><span class="soc-name">The Quinn</span><div class="soc-track"><div class="soc-fill" style="width:25%;background:var(--ink4)"></div></div><span class="soc-pct neu">+3%</span><span class="soc-chev">›</span></div>
         <div class="soc-exp" id="soc-q"><div style="font-family:var(--mono);font-size:9px;color:var(--ink3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Quinn content themes</div><div style="font-size:12px;color:var(--ink2);margin-bottom:3px">Concession promotions — "1 month free" in 60% of posts</div><div style="font-size:12px;color:var(--ink2);margin-bottom:3px">Amenity showcase — 4.2% avg. engagement</div><div style="font-size:12px;color:var(--ink2)">Resident testimonials — 1.8% avg. engagement</div></div>
@@ -1188,25 +1188,25 @@ function switchRole(role,btn){document.querySelectorAll('.role-btn').forEach(b=>
 const langs = {
   en:{label:'EN',name:'English',detect:'Auto-detected: English',
     subject:(n,d)=>`Renewal reminder — your lease expires in ${d} days`,
-    body:(n,apt,d)=>`<p><strong>${n},</strong></p><p>We hope you've been enjoying your home at ${apt}. Your current lease is set to expire in <strong>${d} days</strong>, and we'd love for you to stay.</p><p>Renewing is straightforward. You have until <strong>60 days before your expiration date</strong> to let us know. Our team is here to walk you through your options, answer any questions about pricing, and make the process as smooth as possible.</p><p>If there's anything we can do to make your stay more comfortable, please don't hesitate to reach out.</p><p style="margin-top:16px">Warm regards,<br><strong>Sable Management Team</strong><br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Journal Square · Jersey City, NJ</span></p>`},
+    body:(n,apt,d)=>`<p><strong>${n},</strong></p><p>We hope you've been enjoying your home at ${apt}. Your current lease is set to expire in <strong>${d} days</strong>, and we'd love for you to stay.</p><p>Renewing is straightforward. You have until <strong>60 days before your expiration date</strong> to let us know. Our team is here to walk you through your options, answer any questions about pricing, and make the process as smooth as possible.</p><p>If there's anything we can do to make your stay more comfortable, please don't hesitate to reach out.</p><p style="margin-top:16px">Warm regards,<br><strong>Famous Tower Management Team</strong><br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Famous Tower · Jersey City, NJ</span></p>`},
   zh:{label:'中文',name:'Chinese',detect:'自动识别：中文',
     subject:(n,d)=>`续租提醒 — 您的租约将于 ${d} 天后到期`,
-    body:(n,apt,d)=>`<p><strong>${n} 您好，</strong></p><p>希望您在 ${apt} 的居住生活一切顺心。您的租约将在 <strong>${d} 天后</strong> 到期，我们非常希望您能继续留下来。</p><p>续租流程十分简便。请在租约到期前 <strong>60 天内</strong> 告知我们您的意向，我们的工作人员将为您详细介绍续租选项、解答任何关于租金的问题，并确保整个过程顺畅无忧。</p><p>如果您对居住体验有任何需要改善的地方，欢迎随时与我们联系。</p><p style="margin-top:16px">此致，<br><strong>Sable 物业管理团队</strong><br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Journal Square · Jersey City, NJ</span></p>`},
+    body:(n,apt,d)=>`<p><strong>${n} 您好，</strong></p><p>希望您在 ${apt} 的居住生活一切顺心。您的租约将在 <strong>${d} 天后</strong> 到期，我们非常希望您能继续留下来。</p><p>续租流程十分简便。请在租约到期前 <strong>60 天内</strong> 告知我们您的意向，我们的工作人员将为您详细介绍续租选项、解答任何关于租金的问题，并确保整个过程顺畅无忧。</p><p>如果您对居住体验有任何需要改善的地方，欢迎随时与我们联系。</p><p style="margin-top:16px">此致，<br><strong>Famous Tower 物业管理团队</strong><br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Famous Tower · Jersey City, NJ</span></p>`},
   es:{label:'ES',name:'Spanish',detect:'Auto-detectado: Español',
     subject:(n,d)=>`Recordatorio de renovación — su contrato vence en ${d} días`,
-    body:(n,apt,d)=>`<p><strong>Estimada/o ${n},</strong></p><p>Esperamos que esté disfrutando de su hogar en ${apt}. Su contrato de arrendamiento vencerá en <strong>${d} días</strong>, y nos gustaría que continuara con nosotros.</p><p>Renovar es sencillo. Tiene hasta <strong>60 días antes del vencimiento</strong> para informarnos. Nuestro equipo está disponible para responder cualquier pregunta y hacer el proceso lo más cómodo posible.</p><p>No dude en contactarnos si hay algo que podamos hacer para mejorar su estadía.</p><p style="margin-top:16px">Atentamente,<br><strong>Equipo de Gestión de Sable</strong><br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Journal Square · Jersey City, NJ</span></p>`},
+    body:(n,apt,d)=>`<p><strong>Estimada/o ${n},</strong></p><p>Esperamos que esté disfrutando de su hogar en ${apt}. Su contrato de arrendamiento vencerá en <strong>${d} días</strong>, y nos gustaría que continuara con nosotros.</p><p>Renovar es sencillo. Tiene hasta <strong>60 días antes del vencimiento</strong> para informarnos. Nuestro equipo está disponible para responder cualquier pregunta y hacer el proceso lo más cómodo posible.</p><p>No dude en contactarnos si hay algo que podamos hacer para mejorar su estadía.</p><p style="margin-top:16px">Atentamente,<br><strong>Equipo de Gestión de Famous Tower</strong><br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Famous Tower · Jersey City, NJ</span></p>`},
   ko:{label:'한국어',name:'Korean',detect:'자동 감지: 한국어',
     subject:(n,d)=>`임대 갱신 안내 — 계약 만료 ${d}일 전`,
-    body:(n,apt,d)=>`<p><strong>${n} 고객님께,</strong></p><p>${apt}에서의 생활이 편안하시길 바랍니다. 현재 임대 계약이 <strong>${d}일 후</strong> 만료될 예정입니다. 저희는 고객님께서 계속 함께해 주시길 바랍니다.</p><p>갱신 절차는 간단합니다. 만료일 <strong>60일 전까지</strong> 의향을 알려주시면 됩니다. 담당자가 갱신 옵션과 임대료 관련 사항을 안내해 드리겠습니다.</p><p>거주 환경 개선을 위해 필요한 부분이 있으시면 언제든지 연락 주시기 바랍니다.</p><p style="margin-top:16px">감사합니다,<br><strong>Sable 관리팀</strong><br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Journal Square · Jersey City, NJ</span></p>`},
+    body:(n,apt,d)=>`<p><strong>${n} 고객님께,</strong></p><p>${apt}에서의 생활이 편안하시길 바랍니다. 현재 임대 계약이 <strong>${d}일 후</strong> 만료될 예정입니다. 저희는 고객님께서 계속 함께해 주시길 바랍니다.</p><p>갱신 절차는 간단합니다. 만료일 <strong>60일 전까지</strong> 의향을 알려주시면 됩니다. 담당자가 갱신 옵션과 임대료 관련 사항을 안내해 드리겠습니다.</p><p>거주 환경 개선을 위해 필요한 부분이 있으시면 언제든지 연락 주시기 바랍니다.</p><p style="margin-top:16px">감사합니다,<br><strong>Famous Tower 관리팀</strong><br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Famous Tower · Jersey City, NJ</span></p>`},
   ru:{label:'RU',name:'Russian',detect:'Автоопределение: Русский',
     subject:(n,d)=>`Напоминание о продлении — ваш договор истекает через ${d} дней`,
-    body:(n,apt,d)=>`<p><strong>Уважаемый/ая ${n},</strong></p><p>Надеемся, что вам комфортно в квартире ${apt}. Срок вашего договора аренды истекает через <strong>${d} дней</strong>, и мы хотели бы, чтобы вы остались.</p><p>Продление оформляется просто. Вам необходимо сообщить о своём намерении не позднее чем за <strong>60 дней до истечения срока</strong>. Наша команда готова ответить на все ваши вопросы.</p><p>Если вам что-то необходимо для комфортного проживания — пожалуйста, обращайтесь.</p><p style="margin-top:16px">С уважением,<br><strong>Управляющая компания Sable</strong><br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Journal Square · Jersey City, NJ</span></p>`},
+    body:(n,apt,d)=>`<p><strong>Уважаемый/ая ${n},</strong></p><p>Надеемся, что вам комфортно в квартире ${apt}. Срок вашего договора аренды истекает через <strong>${d} дней</strong>, и мы хотели бы, чтобы вы остались.</p><p>Продление оформляется просто. Вам необходимо сообщить о своём намерении не позднее чем за <strong>60 дней до истечения срока</strong>. Наша команда готова ответить на все ваши вопросы.</p><p>Если вам что-то необходимо для комфортного проживания — пожалуйста, обращайтесь.</p><p style="margin-top:16px">С уважением,<br><strong>Управляющая компания Famous Tower</strong><br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Famous Tower · Jersey City, NJ</span></p>`},
   ar:{label:'AR',name:'Arabic',detect:'تم الكشف التلقائي: العربية',
     subject:(n,d)=>`تذكير بتجديد عقد الإيجار — ينتهي عقدك بعد ${d} يوم`,
-    body:(n,apt,d)=>`<p style="direction:rtl;text-align:right"><strong>عزيزي/عزيزتي ${n}،</strong></p><p style="direction:rtl;text-align:right">نأمل أن تكون تجربتك في الشقة ${apt} ممتعة ومريحة. سينتهي عقد إيجارك الحالي بعد <strong>${d} يوم</strong>، ونودّ أن تبقى معنا.</p><p style="direction:rtl;text-align:right">عملية التجديد بسيطة. يرجى إبلاغنا برغبتك قبل <strong>60 يوماً من تاريخ الانتهاء</strong>. فريقنا مستعد للإجابة على جميع استفساراتك.</p><p style="direction:rtl;text-align:right">لا تتردد في التواصل معنا إذا كان هناك أي شيء يمكننا تحسينه.</p><p style="margin-top:16px;direction:rtl;text-align:right">مع التحية،<br><strong>فريق إدارة Sable</strong><br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Journal Square · Jersey City, NJ</span></p>`},
+    body:(n,apt,d)=>`<p style="direction:rtl;text-align:right"><strong>عزيزي/عزيزتي ${n}،</strong></p><p style="direction:rtl;text-align:right">نأمل أن تكون تجربتك في الشقة ${apt} ممتعة ومريحة. سينتهي عقد إيجارك الحالي بعد <strong>${d} يوم</strong>، ونودّ أن تبقى معنا.</p><p style="direction:rtl;text-align:right">عملية التجديد بسيطة. يرجى إبلاغنا برغبتك قبل <strong>60 يوماً من تاريخ الانتهاء</strong>. فريقنا مستعد للإجابة على جميع استفساراتك.</p><p style="direction:rtl;text-align:right">لا تتردد في التواصل معنا إذا كان هناك أي شيء يمكننا تحسينه.</p><p style="margin-top:16px;direction:rtl;text-align:right">مع التحية،<br><strong>فريق إدارة Famous Tower</strong><br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Famous Tower · Jersey City, NJ</span></p>`},
   fr:{label:'FR',name:'French',detect:'Auto-détecté : Français',
     subject:(n,d)=>`Rappel de renouvellement — votre bail expire dans ${d} jours`,
-    body:(n,apt,d)=>`<p><strong>Cher/Chère ${n},</strong></p><p>Nous espérons que vous vous sentez bien chez vous à ${apt}. Votre bail actuel expire dans <strong>${d} jours</strong>, et nous serions ravis que vous restiez parmi nous.</p><p>Le renouvellement est simple. Vous avez jusqu'à <strong>60 jours avant la date d'expiration</strong> pour nous informer de vos intentions. Notre équipe est disponible pour répondre à toutes vos questions.</p><p>N'hésitez pas à nous contacter si nous pouvons améliorer votre confort.</p><p style="margin-top:16px">Cordialement,<br><strong>L'équipe de gestion Sable</strong><br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Journal Square · Jersey City, NJ</span></p>`}
+    body:(n,apt,d)=>`<p><strong>Cher/Chère ${n},</strong></p><p>Nous espérons que vous vous sentez bien chez vous à ${apt}. Votre bail actuel expire dans <strong>${d} jours</strong>, et nous serions ravis que vous restiez parmi nous.</p><p>Le renouvellement est simple. Vous avez jusqu'à <strong>60 jours avant la date d'expiration</strong> pour nous informer de vos intentions. Notre équipe est disponible pour répondre à toutes vos questions.</p><p>N'hésitez pas à nous contacter si nous pouvons améliorer votre confort.</p><p style="margin-top:16px">Cordialement,<br><strong>L'équipe de gestion Famous Tower</strong><br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Famous Tower · Jersey City, NJ</span></p>`}
 };
 
 let modal = {};
@@ -1256,7 +1256,7 @@ const emailContent = {
 <p>We hope you've been enjoying your home at ${apt}. We're reaching out because your current lease is set to expire in <strong>${days} days</strong> — and we'd love for you to stay.</p>
 <p>Renewing is simple. You have until <strong>60 days before your expiration date</strong> to let us know your intentions. Our team is here to walk you through your renewal options, answer any questions about pricing, and make the process as smooth as possible.</p>
 <p>If there's anything we can do to make your continued stay more comfortable — please don't hesitate to reach out. We value you as a resident and are committed to addressing any concerns you may have.</p>
-<p class="greeting" style="font-weight:400">Warm regards,<br>Sable Management Team<br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Journal Square · Jersey City, NJ</span></p>`
+<p class="greeting" style="font-weight:400">Warm regards,<br>Famous Tower Management Team<br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Famous Tower · Jersey City, NJ</span></p>`
   },
   zh: {
     detect: '自动识别：中文',
@@ -1265,7 +1265,7 @@ const emailContent = {
 <p>希望您在 ${apt} 的居住生活一切顺心。您的当前租约将在 <strong>${days} 天后</strong> 到期，我们非常希望您能继续留下来。</p>
 <p>续租流程十分简便。请在租约到期前 <strong>60 天内</strong> 告知我们您的意向，我们的工作人员将为您详细介绍续租选项、解答任何关于租金的问题，并确保整个过程顺畅无忧。</p>
 <p>如果您对居住体验有任何需要改善的地方，欢迎随时与我们联系。我们非常重视您作为住户的宝贵体验，并致力于妥善处理您的任何关切。</p>
-<p class="greeting" style="font-weight:400">此致<br>Sable 物业管理团队<br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Journal Square · Jersey City, NJ</span></p>`
+<p class="greeting" style="font-weight:400">此致<br>Famous Tower 物业管理团队<br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Famous Tower · Jersey City, NJ</span></p>`
   },
   es: {
     detect: 'Auto-detectado: Español',
@@ -1274,7 +1274,7 @@ const emailContent = {
 <p>Esperamos que esté disfrutando de su hogar en ${apt}. Nos comunicamos con usted porque su contrato de arrendamiento actual vencerá en <strong>${days} días</strong>, y nos gustaría que continuara con nosotros.</p>
 <p>Renovar es sencillo. Tiene hasta <strong>60 días antes de la fecha de vencimiento</strong> para informarnos sus intenciones. Nuestro equipo está disponible para explicarle sus opciones de renovación, responder cualquier pregunta sobre precios y hacer el proceso lo más cómodo posible.</p>
 <p>Si hay algo que podamos hacer para mejorar su estadía, no dude en contactarnos. Valoramos mucho su presencia como residente y estamos comprometidos a atender cualquier inquietud que pueda tener.</p>
-<p class="greeting" style="font-weight:400">Atentamente,<br>Equipo de Gestión de Sable<br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Journal Square · Jersey City, NJ</span></p>`
+<p class="greeting" style="font-weight:400">Atentamente,<br>Equipo de Gestión de Famous Tower<br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Famous Tower · Jersey City, NJ</span></p>`
   },
   ko: {
     detect: '자동 감지: 한국어',
@@ -1283,7 +1283,7 @@ const emailContent = {
 <p>${apt}에서의 생활이 편안하시길 바랍니다. 현재 임대 계약이 <strong>${days}일 후</strong> 만료될 예정이기에 연락드립니다. 저희는 고객님께서 계속 함께해 주시길 진심으로 바랍니다.</p>
 <p>갱신 절차는 간단합니다. 만료일 <strong>60일 전까지</strong> 의향을 알려주시면 됩니다. 저희 담당자가 갱신 옵션을 안내해 드리고, 임대료 관련 궁금한 점을 답변해 드리며, 전체 과정이 원활하게 진행될 수 있도록 도와드리겠습니다.</p>
 <p>거주 환경 개선을 위해 필요한 부분이 있으시면 언제든지 연락 주시기 바랍니다. 고객님은 저희에게 소중한 입주자이시며, 불편 사항이 있으시면 신속히 해결해 드리겠습니다.</p>
-<p class="greeting" style="font-weight:400">감사합니다,<br>Sable 관리팀<br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Journal Square · Jersey City, NJ</span></p>`
+<p class="greeting" style="font-weight:400">감사합니다,<br>Famous Tower 관리팀<br><span style="font-size:11px;color:var(--ink3);font-family:var(--mono)">Famous Tower · Jersey City, NJ</span></p>`
   }
 };
 
