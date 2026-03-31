@@ -176,6 +176,27 @@ body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size
 .sc-divider{height:0.5px;background:var(--rule);margin:12px 0}
 .sc-meta{font-family:var(--mono);font-size:9px;color:var(--ink4);letter-spacing:0.04em;line-height:1.7}
 
+/* Module 04 — phone preview: Xiaohongshu-style note overlay (compact UI, larger device chrome) */
+.xhs-slot{aspect-ratio:9/16;background:#111;border-radius:8px;overflow:hidden;position:relative;isolation:isolate}
+.xhs-slot video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transform:translateZ(0)}
+.xhs-top{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:4px 6px;background:linear-gradient(to bottom,rgba(0,0,0,.45),transparent);color:#fff;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;font-size:8px}
+.xhs-top-l{display:flex;align-items:center;gap:2px;opacity:.95}
+.xhs-top-l span:first-child{font-size:11px;line-height:1}
+.xhs-top-r{opacity:.75;font-size:11px;letter-spacing:1px;line-height:1}
+.xhs-rail{position:absolute;right:3px;bottom:56px;z-index:3;display:flex;flex-direction:column;align-items:center;gap:7px;color:#fff;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+.xhs-av{width:26px;height:26px;border-radius:50%;border:1px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35);overflow:hidden;background:#f0f0f0;display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.xhs-av img{width:100%;height:100%;object-fit:cover;display:block}
+.xhs-av-plus{position:absolute;bottom:-3px;left:50%;transform:translateX(-50%);width:11px;height:11px;background:#ff2442;border-radius:50%;border:1px solid #fff;font-size:9px;line-height:1;font-weight:600;display:flex;align-items:center;justify-content:center;padding-bottom:1px}
+.xhs-act{display:flex;flex-direction:column;align-items:center;gap:0;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.xhs-act-ic{font-size:13px;line-height:1}
+.xhs-act-nu{font-size:7px;font-weight:600;opacity:.95;margin-top:1px}
+.xhs-cap{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:6px 38px 8px 8px;background:linear-gradient(to top,rgba(0,0,0,.82) 0%,rgba(0,0,0,.4) 45%,rgba(0,0,0,.12) 75%,transparent 100%);color:#fff;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+.xhs-cap-user{display:flex;align-items:center;gap:4px;margin-bottom:3px;flex-wrap:wrap}
+.xhs-cap-name{font-size:9px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
+.xhs-cap-follow{font-size:7px;padding:1px 5px;border:1px solid rgba(255,255,255,.75);border-radius:999px;opacity:.95;flex-shrink:0}
+.xhs-cap-title{font-size:9px;font-weight:600;line-height:1.35;margin-bottom:2px}
+.xhs-cap-tags{font-size:7px;opacity:.8;line-height:1.35;word-break:break-word}
+
 /* animations */
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 .fadein{animation:fadeIn 0.2s ease forwards}
@@ -490,11 +511,14 @@ const outputs = {
   instagram: {
     warm: `The New Jersey apartment on everyone's wish list 🤍
 Bright, modern, and made for the kind of life that feels easy.
+
 The morning light.
 The city access.
 The little everyday details that make home feel really good.
+
 Not just a place to stay —
 a place that fits the life you're building.
+
 Some apartments look good online.
 This one feels even better in real life.
 
@@ -865,16 +889,30 @@ renderShowcase('instagram');
 
       <!-- 9:16 phone mockup with video placeholder inside -->
       <div style="display:flex;justify-content:center">
-        <div style="width:200px;background:var(--ink);border-radius:18px;padding:10px;box-shadow:0 0 0 1px var(--rule2)">
+        <div style="width:276px;background:var(--ink);border-radius:22px;padding:11px;box-shadow:0 0 0 1px var(--rule2)">
           <!-- notch -->
-          <div style="width:60px;height:6px;background:#2e2c28;border-radius:3px;margin:0 auto 8px"></div>
-          <!-- video area 9:16 -->
-          <div id="video-slot" style="aspect-ratio:9/16;background:#1a1814;border-radius:8px;overflow:hidden;position:relative">
-            <video src="2025年_USWOO给大家带来了_17个楼的Exclusive_listings_2026_con.mp4" autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></video>
-            <!-- bottom caption bar -->
-            <div style="position:absolute;bottom:0;left:0;right:0;z-index:1;padding:10px 10px 12px;background:linear-gradient(transparent,rgba(26,24,20,0.7))">
-              <div style="font-family:var(--mono);font-size:7px;color:rgba(255,255,255,0.7);letter-spacing:0.06em">SABLE NJ · JERSEY CITY</div>
-              <div style="font-family:var(--serif);font-size:9px;color:#fff;margin-top:2px;line-height:1.4">The NJ apartment on everyone's wish list 🤍</div>
+          <div style="width:68px;height:7px;background:#2e2c28;border-radius:4px;margin:0 auto 9px"></div>
+          <!-- video area 9:16 — 小红书风格笔记预览 -->
+          <div id="video-slot" class="xhs-slot">
+            <video src="2025年_USWOO给大家带来了_17个楼的Exclusive_listings_2026_con.mp4" autoplay muted loop playsinline></video>
+            <div class="xhs-top">
+              <div class="xhs-top-l"><span style="opacity:.9">‹</span><span style="font-weight:600;margin-left:1px">For You</span></div>
+              <div class="xhs-top-r">⋯</div>
+            </div>
+            <div class="xhs-rail">
+              <div class="xhs-av"><img src="uswoo-xhs-avatar.png" alt="" width="26" height="26" loading="lazy"><div class="xhs-av-plus">+</div></div>
+              <div class="xhs-act"><span class="xhs-act-ic">♥</span><span class="xhs-act-nu">2.4k</span></div>
+              <div class="xhs-act"><span class="xhs-act-ic">☆</span><span class="xhs-act-nu">892</span></div>
+              <div class="xhs-act"><span class="xhs-act-ic">💬</span><span class="xhs-act-nu">128</span></div>
+              <div class="xhs-act"><span class="xhs-act-ic">↗</span><span class="xhs-act-nu">Share</span></div>
+            </div>
+            <div class="xhs-cap">
+              <div class="xhs-cap-user">
+                <span class="xhs-cap-name">@USWOO纽约租房</span>
+                <span class="xhs-cap-follow">Follow</span>
+              </div>
+              <div class="xhs-cap-title">USWOO 2025 exclusive listing</div>
+              <div class="xhs-cap-tags">#纽约租房 #新泽西 #USWOO</div>
             </div>
           </div>
           <!-- home bar -->
