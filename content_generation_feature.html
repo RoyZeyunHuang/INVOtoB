@@ -160,6 +160,10 @@ body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size
 .stab.active{color:var(--ink);border-bottom-color:var(--ink)}
 .showcase-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
 .showcase-card{background:var(--paper);padding:24px 22px}
+/* Module 03 showcase: IG mockup slightly narrow; video area 1:1 square, letterboxed */
+.showcase-card .ig-mockup{width:min(200px,100%);margin-left:auto;margin-right:auto}
+.showcase-card .ig-image.ig-image--video{aspect-ratio:1/1;width:100%;max-height:none;min-height:0;padding:0;display:flex;align-items:center;justify-content:center;background:var(--paper3);flex-shrink:0}
+.showcase-card .ig-image.ig-image--video video{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;display:block}
 .sc-persona-bar{height:3px;width:100%;margin-bottom:14px;background:var(--paper3)}
 .sc-persona-fill{height:100%;transition:width 0.3s}
 .sc-persona-label{font-family:var(--mono);font-size:8px;color:var(--ink4);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;display:flex;justify-content:space-between}
@@ -541,6 +545,7 @@ function splitHashtags(text) {
 }
 
 const DEMO_IG_VIDEO_SRC = '688310fa6386b5aa94888cf985350cc0.mov';
+const SHOWCASE_IG_VIDEO_SRC = '8ba19174a1a2303627baa6f7ca604fb0.mov';
 
 function igMockupHeaderHtml() {
   return '<div class="ig-mockup-header"><div class="ig-avatar">SNJ</div><div><div class="ig-handle">sablenjofficial</div><div class="ig-sub">Jersey City, NJ</div></div></div>';
@@ -698,7 +703,7 @@ function setShowcase(tab, btn) {
   renderShowcase(tab);
 }
 
-function scIgMockup(c, svgHtml) {
+function scIgMockup(c, mediaHtml) {
   const lines = c.text.split('\n');
   const tagLine = lines.findIndex(l => l.trim().startsWith('#'));
   const body = tagLine >= 0 ? lines.slice(0, tagLine).join('\n').trim() : c.text.trim();
@@ -708,7 +713,7 @@ function scIgMockup(c, svgHtml) {
     +'<div class="ig-avatar" style="width:26px;height:26px;font-size:8px">SNJ</div>'
     +'<div><div class="ig-handle" style="font-size:9px">sablenjofficial</div>'
     +'<div class="ig-sub">Jersey City, NJ</div></div></div>'
-    + svgHtml
+    + mediaHtml
     +'<div class="ig-body" style="padding:10px 12px;line-height:normal">'
     +'<div class="ig-actions" style="font-size:11px;margin-bottom:6px">\u2665 &nbsp; \u25fb &nbsp; \u27a4</div>'
     +'<div style="font-size:11px;color:#2e2c28;line-height:1.7">'+body.replace(/\n/g,'<br>')+'</div>'
@@ -732,25 +737,16 @@ function renderShowcase(tab) {
   const grid = document.getElementById('showcase-grid');
   grid.className = 'showcase-grid fadein';
 
-  // Get SVG for IG cards
-  const svgEl = document.getElementById('nyc-rooftop-svg');
-  let svgHtml = '';
-  if (svgEl && tab === 'instagram') {
-    const clone = svgEl.cloneNode(true);
-    clone.removeAttribute('id');
-    clone.style.display = 'block';
-    clone.style.position = '';
-    clone.style.left = '';
-    clone.style.maxHeight = '160px';
-    clone.style.aspectRatio = '4/3';
-    svgHtml = clone.outerHTML;
+  let igMediaHtml = '';
+  if (tab === 'instagram') {
+    igMediaHtml = '<div class="ig-image ig-image--video"><video src="' + SHOWCASE_IG_VIDEO_SRC + '" autoplay muted loop playsinline></video></div>';
   }
 
   grid.innerHTML = cards.map(c => {
     const intensity = c.intensity || 50;
     const barColor = c.dot;
     const warmCool = intensity >= 70 ? 'Warm' : intensity >= 40 ? 'Balanced' : 'Minimal';
-    const mockup = tab === 'instagram' ? scIgMockup(c, svgHtml) : scLiMockup(c);
+    const mockup = tab === 'instagram' ? scIgMockup(c, igMediaHtml) : scLiMockup(c);
     return `<div class="showcase-card" style="padding:16px 18px">
       <div class="sc-style" style="margin-bottom:6px">${c.style}</div>
       <div class="sc-persona-label">
@@ -768,7 +764,7 @@ function renderShowcase(tab) {
 renderShowcase('instagram');
 </script>
 
-<!-- Hidden NYC rooftop SVG illustration - used in showcase grid (scIgMockup) -->
+<!-- Hidden NYC rooftop SVG (legacy illustration; Module 03 showcase uses video instead) -->
 <div id="nyc-rooftop-svg" class="ig-image" style="padding:0;overflow:hidden;background:#1a1814;aspect-ratio:4/3;width:100%;max-height:220px">
 <svg width="100%" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" style="display:block">
 <defs>
