@@ -115,6 +115,8 @@ body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size
 .ig-handle{font-family:var(--mono);font-size:10px;color:var(--ink);font-weight:500;line-height:1.3}
 .ig-sub{font-family:var(--mono);font-size:8px;color:var(--ink3);line-height:1.4;margin-top:2px}
 .ig-image{background:var(--paper3);aspect-ratio:4/5;width:100%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ig-image.ig-image--video{aspect-ratio:auto;min-height:0;padding:0;background:var(--paper3);display:block;flex-shrink:0}
+.ig-image.ig-image--video video{width:100%;max-width:100%;height:auto;display:block;vertical-align:top}
 .ig-image-label{font-family:var(--mono);font-size:9px;color:var(--ink4);letter-spacing:0.08em;text-transform:uppercase}
 .ig-body{padding:10px 12px;background:white;flex-shrink:0}
 .ig-actions{display:flex;gap:12px;margin-bottom:6px;font-family:var(--mono);font-size:11px;color:var(--ink3);line-height:1}
@@ -534,26 +536,26 @@ function splitHashtags(text) {
   };
 }
 
+const DEMO_IG_VIDEO_SRC = '2025年_USWOO给大家带来了_17个楼的Exclusive_listings_2026_con.mp4';
+
+function igMockupHeaderHtml() {
+  return '<div class="ig-mockup-header"><div class="ig-avatar">SNJ</div><div><div class="ig-handle">sablenjofficial</div><div class="ig-sub">Jersey City, NJ</div></div></div>';
+}
+
+function igMockupMediaVideoHtml() {
+  return '<div class="ig-image ig-image--video"><video src="' + DEMO_IG_VIDEO_SRC + '" autoplay muted loop playsinline></video></div>';
+}
+
 function buildIgMockup(text, isTyping) {
   const {body, tags} = splitHashtags(text);
-  const svgEl = document.getElementById('nyc-rooftop-svg');
-  let imgHtml = '<div class="ig-image"><span class="ig-image-label">Photo / Video</span></div>';
-  if (svgEl) {
-    const clone = svgEl.cloneNode(true);
-    clone.removeAttribute('id');
-    clone.style.display = 'block';
-    clone.style.position = '';
-    clone.style.left = '';
-    imgHtml = clone.outerHTML;
-  }
   const tagsHtml = tags && !isTyping ? '<div class="ig-tags">'+tags+'</div>' : '';
   const captionHtml = '<div class="ig-caption">'+body.replace(/\n/g,'<br>')+(isTyping?'<span class="cursor"></span>':'')+' </div>';
   return '<div class="ig-mockup">'
-    +'<div class="ig-mockup-header"><div class="ig-avatar">SNJ</div><div><div class="ig-handle">sablenjofficial</div><div class="ig-sub">Jersey City, NJ</div></div></div>'
-    +imgHtml
+    + igMockupHeaderHtml()
+    + igMockupMediaVideoHtml()
     +'<div class="ig-body"><div class="ig-actions">♥ &nbsp;&nbsp; ◻ &nbsp;&nbsp; ➤</div>'
-    +captionHtml
-    +tagsHtml
+    + captionHtml
+    + tagsHtml
     +'</div></div>';
 }
 
@@ -585,23 +587,48 @@ function generate() {
 
   const el = document.getElementById('output-text');
   el.setAttribute('style','padding:0;margin:0;font-size:0;line-height:0;display:block');
+  el.innerHTML = '';
   let typed = '';
   let i = 0;
 
-  function typeChar() {
-    if (i < fullText.length) {
-      typed += fullText[i];
-      const mockup = curPlatform === 'instagram' ? buildIgMockup(typed, true) : buildLiMockup(typed, true);
-      el.innerHTML = mockup;
-      i++;
-      setTimeout(typeChar, 14 + (fullText[i-1] === '\n' ? 60 : 0));
-    } else {
-      const mockup = curPlatform === 'instagram' ? buildIgMockup(fullText, false) : buildLiMockup(fullText, false);
-      el.innerHTML = mockup + `<div class="output-meta" style="margin-top:12px">
+  const outputMetaHtml = `<div class="output-meta" style="margin-top:12px">
         <span class="output-tag" style="border-color:#b8d9c4;color:#2a6640">${curPlatform === 'instagram' ? 'Instagram' : 'LinkedIn'}</span>
         <span class="output-tag" style="border-color:var(--rule2);color:var(--ink3)">${persona === 'warm' ? 'Aspirational · Warm' : 'Professional · Direct'}</span>
         <span class="output-tag" style="border-color:var(--rule2);color:var(--ink3)">Ready to publish</span>
       </div>`;
+
+  function typeChar() {
+    if (i < fullText.length) {
+      typed += fullText[i];
+      if (curPlatform === 'instagram') {
+        if (!el.querySelector('.ig-mockup')) {
+          el.innerHTML = '<div class="ig-mockup">'
+            + igMockupHeaderHtml()
+            + igMockupMediaVideoHtml()
+            + '<div class="ig-body"><div class="ig-actions">♥ &nbsp;&nbsp; ◻ &nbsp;&nbsp; ➤</div><div class="ig-caption"></div></div></div>';
+        }
+        const {body} = splitHashtags(typed);
+        el.querySelector('.ig-caption').innerHTML = body.replace(/\n/g,'<br>') + '<span class="cursor"></span>';
+      } else {
+        el.innerHTML = buildLiMockup(typed, true);
+      }
+      i++;
+      setTimeout(typeChar, 14 + (fullText[i-1] === '\n' ? 60 : 0));
+    } else {
+      if (curPlatform === 'instagram') {
+        const {body, tags} = splitHashtags(fullText);
+        const cap = el.querySelector('.ig-caption');
+        if (cap) cap.innerHTML = body.replace(/\n/g,'<br>');
+        const igBody = el.querySelector('.ig-body');
+        if (tags && igBody) {
+          const oldTags = igBody.querySelector('.ig-tags');
+          if (oldTags) oldTags.remove();
+          igBody.insertAdjacentHTML('beforeend', '<div class="ig-tags">'+tags+'</div>');
+        }
+        el.insertAdjacentHTML('beforeend', outputMetaHtml);
+      } else {
+        el.innerHTML = buildLiMockup(fullText, false) + outputMetaHtml;
+      }
       genLabel.classList.remove('show');
       btn.disabled = false;
       btn.textContent = 'Regenerate →';
@@ -737,7 +764,7 @@ function renderShowcase(tab) {
 renderShowcase('instagram');
 </script>
 
-<!-- Hidden NYC rooftop SVG illustration - referenced by buildIgMockup() -->
+<!-- Hidden NYC rooftop SVG illustration - used in showcase grid (scIgMockup) -->
 <div id="nyc-rooftop-svg" class="ig-image" style="padding:0;overflow:hidden;background:#1a1814;aspect-ratio:4/3;width:100%;max-height:220px">
 <svg width="100%" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" style="display:block">
 <defs>
